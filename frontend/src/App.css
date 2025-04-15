@@ -1,0 +1,7 @@
+.icon-color {
+  color: var(--icon-color)
+}
+
+input::placeholder {
+  color: rgb(214, 119, 10)
+}
