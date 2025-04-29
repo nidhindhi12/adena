@@ -1,12 +1,15 @@
 import React from 'react'
-import Header from './components/Header'
+import EndUserroute from './Routes/EndUserroute'
+import Adminroutes from './Routes/Adminroutes'
+
 import './App.css'
 
 
 const App = () => {
   return (
     <div>
-      <Header/>
+      <EndUserroute />
+      <Adminroutes />
     </div>
   )
 }

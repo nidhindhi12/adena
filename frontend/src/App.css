@@ -1,7 +1,107 @@
-.icon-color {
-  color: var(--icon-color)
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Handlee&display=swap');
+
+:root {
+  --icon-color: #022e71;
+  --secondary-font: "Allura", cursive;
+  --secondary-font-1: "Handlee", cursive;
+  --header-bg-color: #fff1e2;
+  --hover-color: #2b5198;
+  --btn-hover-color: #d5dcf6;
 }
 
-input::placeholder {
-  color: rgb(214, 119, 10)
+a {
+  text-decoration: none !important;
 }
+
+.bg-color {
+  background-color: var(--header-bg-color) !important;
+}
+
+
+.text-color a,
+.text-color {
+  color: var(--icon-color) !important;
+}
+
+.navhover a {
+  color: var(--icon-color) !important;
+  border: 1px solid transparent;
+  font-weight: 600;
+}
+
+.navhover a:hover {
+  color: var(--hover-color) !important;
+
+  border-bottom: 1px solid red;
+}
+
+.badge-position {
+  top: -5px;
+  left: 16px;
+}
+
+
+.modal {
+  height: 100% !important;
+}
+
+/* Image styling */
+.slick-img img {
+  width: 100%;
+  height: 90% !important;
+  object-fit: cover;
+  display: block;
+}
+.carousel-indicators{
+  display: none !important;
+}
+.carousel-control-next-icon, .carousel-control-prev-icon 
+{
+  display: none !important;
+}
+.modal-header {
+  border-bottom: 0 !important;
+}
+
+.btn-border {
+  border: 1px solid var(--icon-color) !important;
+
+}
+
+.btn-border {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.btn-border:hover {
+  background-color: var(--btn-hover-color) !important;
+}
+
+.custom-checkbox {
+  accent-color: red;
+}
+.modal-dialog {
+  width:100% !important; 
+}
+
+.pb-60 {
+  padding-bottom: 60px !important;
+}
+
+.custom-canvas {
+  width: 300px !important
+}
+
+.offcanvas-body {
+  padding: 0 !important;
+}
+
+.imghome {
+  width: 100%;
+
+}
+
+.m-3 {
+  display: none !important;
+}
+
