@@ -3,6 +3,11 @@ import { Row, Container, Carousel } from 'react-bootstrap'
 import homeImg1 from '../images/homeImg1.jpeg'
 import homeImg2 from '../images/homeImg2.jpeg'
 import homeImg3 from '../images/homeImg3.webp'
+import Sidebar from './Admin/Sidebar'
+import Slider from './Slider'
+import Collection from './Admin/Collection'
+import Categories from './Categories'
+
 
 
 const Home = () => {
@@ -11,15 +16,9 @@ const Home = () => {
   const homeSlider = [homeImg2, homeImg1, homeImg3]
   return (
     <>
-      <Container fluid >
-        <Carousel>
-          {homeSlider.map((item, index) => (
-            <Carousel.Item key={index}>
-              <img src={item} alt={`slide-s${index}`} className='w-100 h-100 rounded-4 mt-3' />
-            </Carousel.Item>
-          ))}
-        </Carousel>
-      </Container>
+      <Slider/>
+      <Collection/>
+      <Categories/>
     </>
   )
 }

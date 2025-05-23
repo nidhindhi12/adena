@@ -1,9 +1,11 @@
 const usermodel = require('../model/UserModel');
 const bcrypt = require('bcryptjs')
-const { decrypt } = require('dotenv')
 const sentmail = require('../utils/Nodemailer');
+const { JWT_SECRET } = require('../utils/config')
+const Jwt = require('jsonwebtoken');
 
-//#region  add new new user
+
+//#region add user
 const adduser = async (req, res) => {
     try {
         const user = req.body;
@@ -25,7 +27,7 @@ const adduser = async (req, res) => {
                     <p>Thanks for signing up! We're excited to have you with us. Keep an eye on your inbox — we’ll be sending you updates, tips, and more good stuff soon.
                     If you have any questions, feel free to reach out anytime!</p>`
         console.log(user.email);
-        const mailsent = await sentmail(user.email, sub, text, html)    
+        const mailsent = await sentmail(user.email, sub, text, html)
         if (!mailsent) {
             return res.status(400).json({ status: false, data: { message: 'email not sent' } });
         }
@@ -36,4 +38,32 @@ const adduser = async (req, res) => {
     }
 
 }
-module.exports = { adduser };
+//#endregion
+
+//#region  loginuser
+const loginuser = async (req, res) => {
+    try {
+        const userdetail = req.body;
+        if (!userdetail)
+            return res.status(400).json({ status: false, date: { message: 'Fields are empty' } });
+        const dbuser = await usermodel.findOne({ email: userdetail.email });
+        if (!dbuser) {
+            return res.status(400).json({ status: false, data: { message: 'Email not found' } });
+        }
+        const checkpass = await bcrypt.compare(userdetail.password, dbuser.password)
+        if (!checkpass) {
+            return res.status(400).json({ status: false, data: { message: 'Invalid Password' } })
+        }
+        const token = Jwt.sign({ _id: dbuser._id }, JWT_SECRET);
+        return res.status(200).json({ status: true, data: { message: 'Login successfully.', data: dbuser, token: token } })
+    } catch (error) {
+        return res.status(500).json({ status: false, data: { message: 'internal server error.', data: error } })
+    }
+}
+// middleware
+const AuthVerify = async (req, res) => {
+    return res.status(200).json({ status: true, data: { message: 'Authentication verified', data: req.user } })
+}
+module.exports = { adduser, loginuser, AuthVerify };
+
+

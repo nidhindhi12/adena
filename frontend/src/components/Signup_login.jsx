@@ -10,6 +10,8 @@ import { loginfield, signupfield } from './Data';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { showToast } from '../Store/slice/ToastSlice';
+import { changeauthvalue } from '../Store/slice/authSlice';
+
 
 const Signup_login = () => {
     const imggallery = [loginImg1, loginImg2, loginImg3];
@@ -17,29 +19,48 @@ const Signup_login = () => {
     const isOpen = useSelector((state) => state.modalMenu.isopen)
     const [toggleForm, setToggleForm] = useState(true)
     const dispatch = useDispatch();
-
     const handleToggleForm = () => setToggleForm(!toggleForm);
+    const auth =useSelector((state)=>state.auth.authvalue);
+
 
     const handleAddUser = (e) => {
-        const { name, value } = e.target
-        setAddUser({ ...addUser, [name]: value })
+        const { name, value } = e.target;
+        setAddUser({ ...addUser, [name]: value });
     }
     //#region Add new User
-    const handleSubmit = async (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/', addUser);
             if (response.data.status) {
                 dispatch(showToast({ message: response.data.data.message, type: 'success' }))
+                dispatch(changeauthvalue(response.data.data.data))
 
             }
         } catch (error) {
 
             dispatch(showToast({ message: error.response?.data?.data?.message, type: "error" }))
         }
+        dispatch(changeIsOpen());
     }
     //#endregion
+    //#region  login user
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5000/api/loginuser', addUser);
+            if (response.data.status) {
+                localStorage.setItem("token", response.data.data.token)
+                dispatch(showToast({ message: response.data.data.message, type: 'success' }));
+                dispatch(changeauthvalue());
+            }
+        }
+        catch (error) {
+            dispatch(showToast({ message: response.data.data.message, type: 'error' }));
 
+        }
+        dispatch(changeIsOpen());   
+    }
     return (
         <>
             <Modal fullscreen="sm-down" size='lg' show={isOpen} onHide={() => dispatch(changeIsOpen())} >
@@ -83,7 +104,8 @@ const Signup_login = () => {
                                     </label>
 
                                     <div className=' text-center mt-3 '>
-                                        <Button variant='transparent' className='btn-border rounded-0 py-2 w-100' style={{ 'color': 'var(--icon-color)' }} onClick={handleSubmit}>{toggleForm ? 'Sign Up' : 'Login In'}
+                                        <Button variant='transparent' className='btn-border rounded-0 py-2 w-100' style={{ 'color': 'var(--icon-color)' }} onClick={toggleForm ? handleSignUp : handleLogin}>
+                                            {toggleForm ? 'Sign Up' : 'Login In'}
                                         </Button>
                                     </div>
                                     <div className=' text-center mt-3 '>

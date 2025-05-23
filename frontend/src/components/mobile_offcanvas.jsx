@@ -51,7 +51,6 @@ function OffCanvasMobile({ name, ...props }) {
     </>
   );
 }
-
 export default function OffcanvasOptions() {
   const config = {
     name: 'Enable both scrolling & backdrop',

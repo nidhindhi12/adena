@@ -7,7 +7,7 @@ import { closeToast } from '../slice/ToastSlice';
 const ToastProvider = ({ children }) => {
     const dispatch = useDispatch();
     const toastState = useSelector((state) => state.toastbox);
-    console.log(toastState);
+   
 
     useEffect(() => {
         if (toastState.message && toastState.type) {

@@ -8,7 +8,7 @@ import { searchToggleShow } from '../Store/slice/Offcanvas_slice';
 const Searchbox = () => {
     const search = useSelector((state) => state.offcanvasmenu.searchShow);
     const dispatch = useDispatch();
-    console.log(search);
+    
     return (
         <Offcanvas show={search} onHide={() => dispatch(searchToggleShow())} placement="top">
             <Offcanvas.Header className='justify-content-center' closeButton>

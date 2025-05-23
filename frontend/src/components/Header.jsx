@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Badge, Nav, Navbar } from 'react-bootstrap';
+import { Container, Badge, Nav, Navbar, Dropdown, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from '../images/Indriya-Logo.svg'
 import { RiPokerHeartsLine, RiUser6Fill, RiMenu3Line } from "react-icons/ri";
@@ -11,11 +11,13 @@ import Signup_login from '../components/Signup_login'
 import { offcanvasToggleShow, searchToggleShow } from '../Store/slice/Offcanvas_slice';
 import OffcanvasOptions from './mobile_offcanvas'
 import Searchbox from './Searchbox';
+import { clearLogout } from '../Store/slice/authSlice';
 
 const Header = () => {
     const dispatch = useDispatch()
     const handleModal = () => {
         dispatch(changeIsOpen());
+
     }
     const handleOffcanvas = () => {
         dispatch(offcanvasToggleShow())
@@ -23,7 +25,17 @@ const Header = () => {
     const handleSearch = () => {
         dispatch(searchToggleShow());
     }
+    const handleLogout1 = () => {
+        localStorage.removeItem('token');
+        dispatch(clearLogout());
+    }
+
     const searchIsOpen = useSelector((state) => state.offcanvasmenu.searchShow);
+    const auth = useSelector((state) => state.auth.authvalue)
+    const isOpen = useSelector((state) => state.modalMenu.isopen)
+
+
+
     return (
         <>
             <Navbar expand="lg" className=" px-4 bg-color text-color">
@@ -43,7 +55,7 @@ const Header = () => {
                     </Navbar.Collapse>
                     <div className="header-icons d-flex gap-2 justify-content-end text-color fw-bold d-none d-lg-flex">
                         <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} />
-                            <Searchbox/>
+                            <Searchbox />
                         </div>
 
                         <div className='position-relative'>
@@ -51,8 +63,28 @@ const Header = () => {
                             <div className=' position-absolute badge-position d-none'><Badge>0</Badge>
                             </div>
                         </div>
-                        <div> <RiUser6Fill className=' fs-4 ' onClick={handleModal} /></div>
-                        <Signup_login />
+                        <div className=' position-relative'>
+                            <RiUser6Fill className=' fs-4 ' onClick={handleModal} />
+                            {
+                                auth ?
+                                    (
+
+                                        <div className="position-absolute login-drop z-1" >
+                                            <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '100px' }}>
+
+                                                <div className=' mb-2'> <p className='text-white'>My Account</p></div>
+                                                  <div className=' mb-2'> <p className='text-white cursor' onClick={handleLogout1}>Logout</p></div>
+                                                
+                                            </div>
+                                        </div>
+                                    )
+                                    :
+                                    (
+                                        <Signup_login />
+                                    )
+                            }
+
+                        </div>
                         <div className=' position-relative'><IoIosCart className=' fs-4' />
                             <div className=' position-absolute badge-position d-none'><Badge>0</Badge></div>
                         </div>

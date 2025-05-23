@@ -9,6 +9,7 @@ const EndUserroute = () => {
         <Routes >
             <Route path='/' element={<EndUserLayout />}>
                 <Route index element={<Home />} />
+                {/* <Route path/> */}
                 <Route path='/wishlist' element={<Wishlist />} />
                
             </Route>

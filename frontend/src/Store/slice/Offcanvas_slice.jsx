@@ -5,7 +5,8 @@ const OffCanvasSlice = createSlice({
     name: 'offcanvasmenu',
     initialState: {
         toggleShow: false,
-        searchShow: false
+        searchShow: false,
+        adminShow: false,
     },
     reducers: {
         offcanvasToggleShow: (state) => {
@@ -13,9 +14,12 @@ const OffCanvasSlice = createSlice({
         },
         searchToggleShow: (state) => {
             state.searchShow = !state.searchShow
+        },
+        offcanvasAdminToggle: (state) => {
+            state.adminShow = !state.adminShow
         }
     }
 })
 
-export const { offcanvasToggleShow, searchToggleShow } = OffCanvasSlice.actions
+export const { offcanvasToggleShow, searchToggleShow ,offcanvasAdminToggle } = OffCanvasSlice.actions
 export default OffCanvasSlice.reducer
