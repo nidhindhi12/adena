@@ -9,10 +9,10 @@ const addocasssion = async (req, res) => {
         }
 
         const dbocasssion = ocasssionmodel({
-            ocassionname:ocasssiondata.ocassionname
+            ocassionname: ocasssiondata.ocassionname
         })
         dbocasssion.save();
-        return res.status(200).json({ status: true, data: { message: "Product catgory add successfully", data: dbocasssion } });
+        return res.status(200).json({ status: true, data: { message: "Ocassion add successfully", data: dbocasssion } });
 
     } catch (error) {
         console.log(error);
@@ -20,4 +20,14 @@ const addocasssion = async (req, res) => {
     }
 }
 
-module.exports = { addocasssion };
+const readocassiondata = async (req, res) => {
+    try {
+        const ocasssiondata = await ocasssionmodel.find();
+        return res.status(200).json({ status: true, data: { message: "product read successfully", data: ocasssiondata } });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: false, data: { message: 'Internal server error.' }, data: error });
+    }
+}
+
+module.exports = { addocasssion,readocassiondata };

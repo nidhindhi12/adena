@@ -1,31 +1,78 @@
-const categorymodel = require("../model/categorymodel");
+const categorymodel = require('../model/categorymodel')
 
 
 const addcategory = async (req, res) => {
     try {
         const catedata = req.body;
-        console.log(catedata);
+
         if (!catedata) {
             return res.status(400).json({ status: false, data: { message: " Category Data is null" } });
         }
         const dbcat = categorymodel({
             categoryname: catedata.categoryname
         })
-        dbcat.save();
+         await dbcat.save();
         return res.status(200).json({ status: true, data: { message: "Product catgory add successfully", data: dbcat } });
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ status: false, data: { message: 'Internal server error', data: error } });
     }
 }
 
 const readcategory = async (req, res) => {
     try {
-        
+        const categorydata = await categorymodel.find();
+
+        return res.status(200).json({ status: true, data: { message: "product read successfully", data: categorydata } });
     } catch (error) {
-        
+        return res.status(500).json({ status: false, data: { message: 'Internal server error.' }, data: error });
     }
 
 }
+const deletecategory = async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        await categorymodel.deleteOne({_id:id});
+        return res.status(200).json({ status: true, data: { message: 'Product deleted  successfully' } });
 
-module.exports = { addcategory }
+    } catch (error) {
+        return res.status(500).json({ status: false, data: { message: "Internal server error", data: error } });
+    }
+}
+const getcategorywithproductcount = async (req, res) => {
+    try {
+     const data = await categorymodel.aggregate([
+
+            {
+                $lookup: {
+                    from: "products",
+                    localField: '_id',
+                    foreignField: 'category',
+                    as: 'categoryInfo'
+
+                }
+            },
+            {
+                $addFields: {
+                    totalProducts: { $size: { $ifNull: ["$categoryInfo", []] } }
+                }
+            },
+            {
+                $project: {
+                    categoryId: "$_id",
+                    categoryame: '$categoryname',
+                    totalProducts: 1,
+                }
+            }
+        ])
+        
+        return res.status(200).json({ status: true, data: { message: "Fetched", data: data } });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: false, data: { message: 'Internal Server Error', data: error } });
+    }
+}
+
+module.exports = { addcategory, readcategory, getcategorywithproductcount, deletecategory }

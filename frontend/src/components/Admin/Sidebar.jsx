@@ -10,11 +10,11 @@ import { useDispatch, useSelector } from 'react-redux'
 const Sidebar = () => {
   const admincanvasshow = useSelector(state => state.offcanvasmenu.adminShow);
   const dispatch = useDispatch();
-  console.log(admincanvasshow);
+ 
 
   return (
     <>
-      <Offcanvas show={admincanvasshow} onHide={() => dispatch(offcanvasAdminToggle())} responsive="md" className='px-2  vh-100' style={{ backgroundColor: 'var(--admin-hover)', width: '250px' }} >
+      <Offcanvas show={admincanvasshow} onHide={() => dispatch(offcanvasAdminToggle())} responsive="md" className='px-2  vh-100' style={{ backgroundColor: 'var(--admin-hover)', width: '350px' }} >
 
         <Offcanvas.Title>
           <div className=' d-flex gap-3  pt-3 justify-content-start' >

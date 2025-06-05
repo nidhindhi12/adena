@@ -1,7 +1,8 @@
 import { BiSolidDashboard } from "react-icons/bi";
 import { PiShoppingBagFill } from "react-icons/pi";
-import { MdProductionQuantityLimits } from "react-icons/md";
+import { MdProductionQuantityLimits, MdCategory,MdFestival } from "react-icons/md";
 import { LuUsers, LuCircleUser, LuMessageSquareText } from "react-icons/lu";
+import { GiMetalBar } from "react-icons/gi";
 import { FaTasks } from "react-icons/fa";
 
 //#region signup field
@@ -51,6 +52,21 @@ export const adminnavbar = [
     path: '/admin/products',
     icon: MdProductionQuantityLimits
   },
+  {
+    name: 'Category',
+    path: '/admin/category',
+    icon: MdCategory
+  },
+  {
+    name: 'Metal',
+    path: '/admin/metal',
+    icon: GiMetalBar
+  },
+  {
+    name:'Ocassion',
+    path:'/admin/ocassion',
+    icon:MdFestival
+  }
 ]
 //#endregion
 //#region  admindropdown
@@ -73,4 +89,54 @@ export const admindropdown = [
 
 ]
 //#endregion
+
+//#region customer service
+export const customerservice = [
+  {
+    name: "Faq",
+    path: '/'
+  },
+  {
+    name: "Size guide",
+    path: '/'
+  },
+  {
+    name: "Shipping",
+    path: '/'
+  },
+  {
+    name: "Order status",
+    path: '/'
+  },
+  {
+    name: "Exchange",
+    path: '/'
+  }
+]
+//#endregion
+
+// about us
+
+export const aboutus = [
+  {
+    name: "Our Shops",
+    path: '/'
+  },
+  {
+    name: "Size guide",
+    path: '/'
+  },
+  {
+    name: "Shipping",
+    path: '/'
+  },
+  {
+    name: "Order Status",
+    path: "/"
+  },
+  {
+    name: "exchanges",
+    path: '/'
+  }
+]
 

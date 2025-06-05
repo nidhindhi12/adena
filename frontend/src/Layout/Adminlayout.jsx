@@ -28,7 +28,7 @@ const Adminlayout = () => {
         <div> <AdminHeader /></div>
         <Sidebar/>
         <Outlet/>
-        <div className=' position-absolute bottom-0 w-100 rounded rounded-3'>
+        <div className=' fixed-bottom w-100 rounded rounded-3'>
           <AdminFooter/>
         </div>
       </div>

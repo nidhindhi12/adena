@@ -7,6 +7,7 @@ import Sidebar from './Admin/Sidebar'
 import Slider from './Slider'
 import Collection from './Admin/Collection'
 import Categories from './Categories'
+import Mainfooter from './Mainfooter'
 
 
 
@@ -19,6 +20,7 @@ const Home = () => {
       <Slider/>
       <Collection/>
       <Categories/>
+     
     </>
   )
 }

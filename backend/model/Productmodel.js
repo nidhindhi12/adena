@@ -1,9 +1,11 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-    
+
     title: {
-        type: String
+        type: String,
+        required: true,
+
     },
     price:
     {
@@ -17,20 +19,28 @@ const productSchema = new mongoose.Schema({
     gender:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'gender',
+        ref: 'gender',
         required: true,
     },
     metal:
     {
-         type: mongoose.Schema.Types.ObjectId,
-        ref:'metal',
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'metal',
         required: true,
     },
     ocassion:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'ocassion',
+        ref: 'ocassion',
         required: true,
+    },
+    size: {
+        type: String,
+        required: true
+    },
+    karatage: {
+        type: String,
+        required: true
     },
     discount:
     {
@@ -39,8 +49,10 @@ const productSchema = new mongoose.Schema({
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'category'
+        ref: 'category',
+        required: true,
     },
+
     image:
         [
             {

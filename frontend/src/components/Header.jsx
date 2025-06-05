@@ -29,14 +29,11 @@ const Header = () => {
         localStorage.removeItem('token');
         dispatch(clearLogout());
     }
-
     const searchIsOpen = useSelector((state) => state.offcanvasmenu.searchShow);
     const auth = useSelector((state) => state.auth.authvalue)
     const isOpen = useSelector((state) => state.modalMenu.isopen)
 
-
-
-    return (
+     return (
         <>
             <Navbar expand="lg" className=" px-4 bg-color text-color">
                 <Container fluid>
@@ -57,7 +54,6 @@ const Header = () => {
                         <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} />
                             <Searchbox />
                         </div>
-
                         <div className='position-relative'>
                             <Link to='/wishlist'> <RiPokerHeartsLine className=' fs-4' /></Link>
                             <div className=' position-absolute badge-position d-none'><Badge>0</Badge>
@@ -68,13 +64,12 @@ const Header = () => {
                             {
                                 auth ?
                                     (
-
                                         <div className="position-absolute login-drop z-1" >
                                             <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '100px' }}>
 
                                                 <div className=' mb-2'> <p className='text-white'>My Account</p></div>
-                                                  <div className=' mb-2'> <p className='text-white cursor' onClick={handleLogout1}>Logout</p></div>
-                                                
+                                                <div className=' mb-2'> <p className='text-white cursor' onClick={handleLogout1}>Logout</p></div>
+
                                             </div>
                                         </div>
                                     )
@@ -83,7 +78,6 @@ const Header = () => {
                                         <Signup_login />
                                     )
                             }
-
                         </div>
                         <div className=' position-relative'><IoIosCart className=' fs-4' />
                             <div className=' position-absolute badge-position d-none'><Badge>0</Badge></div>
@@ -95,7 +89,6 @@ const Header = () => {
                         <Link to='/'> <img src={logo} alt="" width={140} /></Link>
                         <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} /></div>
                     </div>
-
                 </Container>
             </Navbar>
         </>

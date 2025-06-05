@@ -3,7 +3,7 @@ import { LuMenu } from "react-icons/lu";
 import { Row, Col, Container, Form } from 'react-bootstrap'
 import { IoSearch, IoLanguage } from "react-icons/io5";
 import { IoMdSunny, IoIosSettings, IoMdNotificationsOutline } from "react-icons/io";
-import admin from '../../images/admin.png';
+import admin from '../../images/admin-logo.svg';
 import { FaAngleDown } from "react-icons/fa";
 import { admindropdown } from '../Data';
 import { Link } from 'react-router-dom';

@@ -14,7 +14,7 @@ function OffCanvasMobile({ name, ...props }) {
   const offcanvasShow = useSelector((state) => state.offcanvasmenu.toggleShow);
   const dispatch = useDispatch();
   const handleModal = () => {
-    console.log('true')
+    
     dispatch(changeIsOpen());
   }
   return (

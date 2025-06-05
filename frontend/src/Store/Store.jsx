@@ -3,6 +3,7 @@ import modalReducer from './slice/ModaSlice'
 import offcanvasReducer from './slice/Offcanvas_slice'
 import toastReducer from './slice/ToastSlice'
 import authReducer from './slice/AuthSlice'
+import productdataReducer from './slice/ProductdataSlice'
 
 
 
@@ -11,7 +12,8 @@ const store = configureStore({
         modalMenu: modalReducer,
         offcanvasmenu: offcanvasReducer,
         toastbox: toastReducer,
-        auth:authReducer
+        auth: authReducer,
+        productdata: productdataReducer
     }
 })
 
