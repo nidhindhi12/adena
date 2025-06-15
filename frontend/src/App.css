@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Allura&family=Handlee&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap');
 
 
 :root {
   --icon-color: #022e71;
   --secondary-font: "Fraunces", serif;
   --secondary-font-1: "DM Sans", sans-serif;
+  --third-font: "Cedarville Cursive", cursive;
   --header-bg-color: #fff1e2;
   --hover-color: #2b5198;
   --btn-hover-color: #d5dcf6;
@@ -24,6 +26,10 @@
 } */
 .fs-13 {
   font-size: 13px;
+}
+
+.third-font {
+  font-family: var(--third-font);
 }
 
 a {
@@ -454,29 +460,76 @@ ul li:nth-child(4) a:before {
 }
 
 .list-icon {
-  width:40px;
+  width: 40px;
   height: 40px;
-  background-color:var(--admin-text-hover);
+  background-color: var(--admin-text-hover);
   border-radius: 50%;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
-  
 }
+
+.image-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
 .table,
 .table th,
 .table td {
   border: none !important;
 }
+
 .table>:not(caption)>*>* {
   background-color: var(--admin-hover) !important;
 }
+
 th {
   white-space: nowrap;
   vertical-align: middle;
 }
-.table-striped > tbody > tr:nth-child(odd) > td,
-.table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: rgba(5, 6, 37, 0.1) !important; 
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+  background-color: rgba(5, 6, 37, 0.1) !important;
+}
+
+.image {
+  background: linear-gradient(180deg, #ffd392, #cf9c56 48.96%, #b87c08);
+  height: 1px;
+
+}
+
+.img-pos {
+  top: -19px;
+}
+
+.filter-border {
+  border-bottom: 1px solid #f8d3c8;
+}
+.loader
+{
+      background: rgba(255, 249, 243, .7);
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      top:0;
+      z-index: 9;
+}
+.loader img
+{
+  position: relative;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
 }

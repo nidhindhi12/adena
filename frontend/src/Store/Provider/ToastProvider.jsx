@@ -27,7 +27,8 @@ const ToastProvider = ({ children }) => {
 
             })
         }
-    }, [toastState, dispatch])
+    // }, [toastState, dispatch])
+    }, [toastState.id])
     return (
         <>
             {children}

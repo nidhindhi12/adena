@@ -1,6 +1,6 @@
 import React from 'react'
-import { Container, Badge, Nav, Navbar, Dropdown, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Container, Badge, Nav, Navbar } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/Indriya-Logo.svg'
 import { RiPokerHeartsLine, RiUser6Fill, RiMenu3Line } from "react-icons/ri";
 import { IoIosCart } from "react-icons/io";
@@ -12,12 +12,14 @@ import { offcanvasToggleShow, searchToggleShow } from '../Store/slice/Offcanvas_
 import OffcanvasOptions from './mobile_offcanvas'
 import Searchbox from './Searchbox';
 import { clearLogout } from '../Store/slice/authSlice';
+import { getfilter, filterProductsbByCat } from '../Store/slice/FilterSlice';
+import { headerdata } from './Data';
+
 
 const Header = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const handleModal = () => {
         dispatch(changeIsOpen());
-
     }
     const handleOffcanvas = () => {
         dispatch(offcanvasToggleShow())
@@ -29,11 +31,12 @@ const Header = () => {
         localStorage.removeItem('token');
         dispatch(clearLogout());
     }
-    const searchIsOpen = useSelector((state) => state.offcanvasmenu.searchShow);
+    const handleFilter = async (item) => {
+        dispatch(filterProductsbByCat(item));
+    }
     const auth = useSelector((state) => state.auth.authvalue)
     const isOpen = useSelector((state) => state.modalMenu.isopen)
-
-     return (
+    return (
         <>
             <Navbar expand="lg" className=" px-4 bg-color text-color">
                 <Container fluid>
@@ -43,11 +46,11 @@ const Header = () => {
                     <Navbar.Toggle aria-controls="navbarScroll" className='d-none' />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className=" my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>
-                            <Link to="#">Shop All</Link>
-                            <Link to="#">Celebs Favourite</Link>
-                            <Link to="#">Best Sellers</Link>
-                            <Link to="#">New Arrivals</Link>
-                            <Link to="#">Daily Wear</Link>
+                            {
+                                headerdata.map((item, index) => (
+                                    <Link to="/filterproduct" style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => handleFilter(item)} key={index}>{item}</Link>
+                                ))
+                            }
                         </Nav>
                     </Navbar.Collapse>
                     <div className="header-icons d-flex gap-2 justify-content-end text-color fw-bold d-none d-lg-flex">
@@ -63,20 +66,14 @@ const Header = () => {
                             <RiUser6Fill className=' fs-4 ' onClick={handleModal} />
                             {
                                 auth ?
-                                    (
-                                        <div className="position-absolute login-drop z-1" >
-                                            <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '100px' }}>
-
-                                                <div className=' mb-2'> <p className='text-white'>My Account</p></div>
-                                                <div className=' mb-2'> <p className='text-white cursor' onClick={handleLogout1}>Logout</p></div>
-
-                                            </div>
+                                    (<div className="position-absolute login-drop z-1" >
+                                        <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '100px' }}>
+                                            <div className=' mb-2'> <span className='text-white'>My Account</span></div>
+                                            <div className=' mb-2'> <span className='text-white cursor' onClick={handleLogout1}>Logout</span></div>
                                         </div>
-                                    )
+                                    </div>)
                                     :
-                                    (
-                                        <Signup_login />
-                                    )
+                                    (<Signup_login />)
                             }
                         </div>
                         <div className=' position-relative'><IoIosCart className=' fs-4' />

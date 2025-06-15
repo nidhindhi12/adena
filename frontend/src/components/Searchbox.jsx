@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import Button from 'react-bootstrap/Button';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+
+import { Offcanvas, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchToggleShow } from '../Store/slice/Offcanvas_slice';
 
@@ -8,14 +7,16 @@ import { searchToggleShow } from '../Store/slice/Offcanvas_slice';
 const Searchbox = () => {
     const search = useSelector((state) => state.offcanvasmenu.searchShow);
     const dispatch = useDispatch();
-    
+
     return (
-        <Offcanvas show={search} onHide={() => dispatch(searchToggleShow())} placement="top">
-            <Offcanvas.Header className='justify-content-center' closeButton>
-                <Offcanvas.Title className=' fw-bolder fs-4 text-center'>Search</Offcanvas.Title>
+        <Offcanvas show={search} onHide={() => dispatch(searchToggleShow())} placement="top"
+            style={{ backgroundColor: 'var(--header-bg-color)' }}>
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title className=' fw-bolder fs-4' style={{ color: 'var(-icon-color' }}>Search</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body>
-                This is an Offcanvas from the top. Add any content you want here.
+            <Offcanvas.Body className=' text-center'>
+                <input type="Search" placeholder='Search here....' className='w-75 py-2 rounded-2 border' />
+                <Button>Search</Button>
             </Offcanvas.Body>
         </Offcanvas>
     )

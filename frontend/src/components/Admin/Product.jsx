@@ -3,7 +3,8 @@ import axios from 'axios'
 import { showToast } from '../../Store/slice/ToastSlice';
 import CreateProduct from './CreateProduct';
 import ProductData from '../ProductData';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import ProductList from './ProductList';
 
 
 
@@ -25,6 +26,7 @@ const Product = () => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
+
   const handleImageChange = (e) => {
     const files = e.target.files;
 
@@ -54,7 +56,7 @@ const Product = () => {
     try {
       const allFormData = new FormData();
       allFormData.append("folder", 'productImg');
-      
+
       selectedFile.forEach(file => {
         allFormData.append('image', file)
       })
@@ -68,15 +70,15 @@ const Product = () => {
       }
       const res = await axios.post('http://localhost:5000/product/addproduct', allFormData, config);
       if (res.data.status) {
-        dispatch(showToast({message:"product added successfully",type:"success"}));
-        
+        dispatch(showToast({ message: "product added successfully", type: "success" }));
+
       }
       setFormData(initialState);
       setImgPrev([]);
       setSelectedFile([]);
       setShow(false);
     } catch (error) {
-      dispatch(showToast({message:"failed to add product", type:"error"}));
+      dispatch(showToast({ message: "failed to add product", type: "error" }));
       console.log(error);
     }
   }
@@ -85,6 +87,7 @@ const Product = () => {
       <CreateProduct
         formData={formData} setFormData={setFormData} handleImageChange={handleImageChange} addProduct={addproduct} imgPrev={imgPrev}
       />
+      <ProductList />
       <ProductData />
     </>
   )

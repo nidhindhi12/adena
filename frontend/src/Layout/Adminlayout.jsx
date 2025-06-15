@@ -13,24 +13,25 @@ const Adminlayout = () => {
           <Col className='px-0' md={2} style={{ backgroundColor: 'var(--admin-hover)' }} >
             <Sidebar />
           </Col>
-          
-          <Col className=' position-relative px-0 mx-3'>
-            <div> <AdminHeader /></div>
-            <div><Outlet /></div>
 
-            <div className=' position-absolute bottom-0 w-100 rounded rounded-3'>
+          <Col className=' position-relative px-0 mx-3 min-vh-100'>
+            <div> <AdminHeader /></div>
+            <div className=' flex-grow-1'><Outlet /></div>
+
+            <div className='w-100 rounded rounded-3'>
               <AdminFooter />
             </div>
           </Col>
         </Row>
       </div>
-      <div className=' d-md-none d-block 'style={{ 'backgroundColor': 'var(  --admin-bg-color)' }}>
+      <div className=' d-md-none d-flex flex-column min-vh-100 ' style={{ 'backgroundColor': 'var(  --admin-bg-color)' }}>
         <div> <AdminHeader /></div>
-        <Sidebar/>
-        <Outlet/>
-        <div className=' fixed-bottom w-100 rounded rounded-3'>
-          <AdminFooter/>
+        <Sidebar />
+        <div className='flex-grow-1'>
+          <Outlet />
         </div>
+        <AdminFooter />
+
       </div>
 
 

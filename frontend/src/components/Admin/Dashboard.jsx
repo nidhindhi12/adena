@@ -1,11 +1,65 @@
-import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import dash from '../../images/welcome.png'
+import Chart from 'react-apexcharts'
+import { RiShoppingBag2Line, RiCalendarCloseLine } from "react-icons/ri";
+import { chartOptions, chartSeries } from '../Data';
+import { chartAreaOptions, chartAreaSeries } from '../Data'
+import TotalSales from './TotalSales'
+import TotalCustomer from './TotalCustomer';
+import AdminOrder from './AdminOrder';
 
 const Dashboard = () => {
   return (
-    <div className=' text-white'>
-      Dashboard Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus perferendis asperiores sit est, facere beatae sapiente hic deleniti, debitis ut id! Soluta nesciunt rem dignissimos. Error libero odit voluptatum, qui totam quisquam itaque, necessitatibus natus veniam corrupti sapiente tempora eligendi aliquid quo, vero rem. Rem, tenetur voluptatibus assumenda accusantium blanditiis cupiditate consequuntur ipsam iste recusandae voluptate illum accusamus molestias. Iure qui vel consectetur natus nobis eaque aspernatur sint! Ipsum accusamus est quis officia pariatur aspernatur ipsam impedit, incidunt labore corporis aut reprehenderit sit veritatis repellendus necessitatibus molestiae magni mollitia, sunt voluptates, ea tempore et. Aperiam, excepturi? Non dicta, eveniet consequatur saepe magnam incidunt fugiat minus blanditiis iste qui aspernatur possimus sapiente nisi autem ducimus odio modi numquam vitae est ab dolores placeat pariatur quasi illo. Cupiditate doloremque blanditiis modi nihil voluptas similique quae possimus est dolores illum tempore incidunt eveniet perspiciatis eius debitis, quaerat totam, ex optio earum temporibus enim vitae maiores maxime praesentium. Vero quo ut odit ea dolores porro rerum, hic itaque ipsam maiores doloremque officiis ducimus neque incidunt est. A numquam sapiente incidunt, recusandae praesentium officia fuga veniam maxime expedita non atque animi ad? Recusandae a quae eligendi, sapiente cumque assumenda quod itaque, unde vero, ea dicta.
-    </div>
+    <>
+      <Container className='mt-4 '>
+        <Row className='mx-0 p-2 gap-3 gap-lg-0'>
+          <Col xs={12} lg={7} style={{ backgroundColor: 'var(--admin-text-hover)' }} className='rounded-3 py-3'>
+            <Row className='ps-3'>
+              <Col>
+                <h4 className=' text-white fs-4 fw-medium'>Good Morning, <span style={{ color: '#ffcea9', fontFamily:'var(--secondary-font)'}}>Olivia!</span></h4>
+                <span className=' text-white-50 fs-14'>Here's what's happening with your store today.</span>
+              </Col>
+              <Col className=' d-flex justify-content-end px-3'>
+                <img src={dash} alt="" width={180} />
+              </Col>
+            </Row>
+            <div className=' d-flex gap-5'>
+              <div className=' d-flex gap-3'>
+                <div className='bg-white d-inline-block px-2 py-3 rounded-2'>
+                  <RiShoppingBag2Line style={{ color: 'var(--admin-text-hover)' }} className=' fs-4 fw-bold' />
+                </div>
+                <div>
+                  <span className='text-white fw-semibold fs-6 mb-0'>86 New Orders</span>
+                  <p className=' mb-0 text-white-50 fs-14 fw-semibold'>Awaiting processing</p>
+                </div>
+              </div>
+              <div className=' d-flex gap-2'>
+                <div className='bg-white d-inline-block px-2 py-3 rounded-2'>
+                  <RiCalendarCloseLine className=' fs-4 fw-bold text-danger' />
+                </div>
+                <div>
+                  <span className='text-white fw-medium fs-6 mb-0'>35 Products</span>
+                  <p className=' mb-0 text-white-50 fw-bold fw-semibold fs-14'>Out of stock</p>
+                </div>
+              </div>
+            </div>
+          </Col>
+          <Col xs={12} lg={5} style={{ backgroundColor: 'var( --admin-hover)' }} className='rounded-3'>
+            <AdminOrder />
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={7} xs={12} className=' mt-5'>
+            <TotalSales />
+          </Col>
+          <Col lg={5} xs={12} className=' mt-5'>
+            <TotalCustomer />
+          </Col>
+        </Row>
+      </Container >
+    </>
+
   )
 }
-
 export default Dashboard
+

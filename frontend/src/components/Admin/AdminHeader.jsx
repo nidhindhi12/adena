@@ -47,7 +47,7 @@ const AdminHeader = () => {
                 <span className=' icon-color ms-1'><FaAngleDown /></span>
                 {
                   showDropdown && (
-                    <div className=' position-absolute profile-box' style={{ backgroundColor: 'var(--admin-bg-color)' }}>
+                    <div className=' position-absolute profile-box z-2' style={{ backgroundColor: 'var(--admin-bg-color)' }}>
                       <div className='d-flex align-items-center px-2 py-3 gap-2 custom-border'>
                         <img src={admin} alt="" width={40} height={40} className='dp-border' />
                         <div>

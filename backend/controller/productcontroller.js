@@ -1,16 +1,15 @@
 const productmodel = require('../model/Productmodel');
 const cloudinary = require('../utils/cloudinary.config');
 const categorymodel = require('../model/categorymodel');
-const gendermodel =require('../model/gendermodel');
-const metalmodel= require('../model/metalmodel');
-const ocassionmodel= require('../model/ocassionmodel');
+const gendermodel = require('../model/gendermodel');
+const metalmodel = require('../model/metalmodel');
+const ocassionmodel = require('../model/ocassionmodel');
 const fs = require('fs');
 const mongoose = require('mongoose');
 
 const addproduct = async (req, res) => {
     try {
         const data = req.body;
-        console.log('Received data:', data);
 
         if (!data) {
             return res.status(400).json({ status: false, data: { message: "Data is null" } });
@@ -19,13 +18,12 @@ const addproduct = async (req, res) => {
         if (!procat) {
             return res.status(400).json({ status: false, data: { message: "Category not found" } });
         }
-        
+
         const progender = await gendermodel.findById(data.gender);
-        console.log(progender);
         if (!progender) {
             return res.status(400).json({ status: false, data: { message: "Gender not found" } });
         }
-        
+
         const prometal = await metalmodel.findById(data.metal)
         if (!prometal) {
             return res.status(400).json({ status: false, data: { message: "Metalnot found" } });
@@ -48,10 +46,10 @@ const addproduct = async (req, res) => {
             description: data.description,
             gender: progender._id,
             metal: prometal._id,
-            ocassion:proocassion._id,   // make sure this spelling matches your schema!
-            discount:data.discount,
-            size:data.size,
-            karatage:data.karatage,
+            ocassion: proocassion._id,   // make sure this spelling matches your schema!
+            discount: data.discount,
+            size: data.size,
+            karatage: data.karatage,
             category: procat._id,
             image: uploadimages
         });
@@ -71,5 +69,69 @@ const addproduct = async (req, res) => {
         });
     }
 };
+const readproducts = async (req, res) => {
+    try {
+        const data = await productmodel.aggregate([
 
-module.exports = { addproduct };
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: "category",
+                    foreignField: "_id",
+                    as: 'categoryInfo'
+
+                }
+            },
+            { $unwind: '$categoryInfo' },
+            {
+                $lookup: {
+                    from: 'genders',
+                    localField: "gender",
+                    foreignField: "_id",
+                    as: "genderInfo"
+                }
+            },
+            { $unwind: '$genderInfo' },
+            {
+                $lookup: {
+                    from: 'metals',
+                    localField: "metal",
+                    foreignField: "_id",
+                    as: "metalInfo"
+                }
+            },
+            { $unwind: '$metalInfo' },
+            {
+                $lookup: {
+                    from: "ocassions",
+                    localField: "ocassion",
+                    foreignField: "_id",
+                    as: "ocassionInfo"
+                }
+            },
+            { $unwind: '$ocassionInfo' },
+            {
+                $project:{
+                    title:1,
+                    price:1,
+                    description:1,
+                    discount:1,
+                    karatage:1,
+                    size:1,
+                    image:1,
+                    category:'$categoryInfo.categoryname',
+                    gender:'$genderInfo.gendername',
+                    metal:'$metalInfo.metalname',
+                    ocassion:"$ocassionInfo.ocassionname"
+                }
+            }
+        ])
+        return res.status(200).json({ status: true, data: { message: "Fetched", data: data } });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({ status: false, data: { message: 'Internal Server Error', data: error } });
+    }
+}
+
+module.exports = { addproduct, readproducts };

@@ -1,9 +1,12 @@
 const express = require('express');
-const { addmetal, readmetaldata } = require('../controller/metalcontroller');
+const { addmetal, readmetaldata, deletemetal, getmetalwithproductcount, updatemetal } = require('../controller/metalcontroller');
 const router = express.Router();
 
 
 router.post('/addmetal', addmetal);
-router.get('/readmetaldata',readmetaldata)
+router.get('/readmetaldata',readmetaldata);
+router.delete('/deletemetal/:id',deletemetal);
+router.get('/getmetalwithproductcount',getmetalwithproductcount);
+router.put('/updatemetal/:id',updatemetal);
 
 module.exports = router;

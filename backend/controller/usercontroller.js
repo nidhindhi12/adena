@@ -13,8 +13,19 @@ const adduser = async (req, res) => {
             return res.status(400).json({ status: false, data: { message: 'user is null' } });
         }
         const hashpassword = bcrypt.hashSync(user.password, 10);
+        
+        const imageData = req.file
+            ? {
+                url: req.file.path,
+                public_id: req.file.filename, // Cloudinary gives `filename` as public_id
+            }
+            : null;
+
+        if (!imageData) {
+            return res.status(400).json({ status: false, data: { message: 'User Image is null' } });
+        }
         const dbuser = new usermodel({
-            firstname: user.firstname, lastname: user.lastname, email: user.email, phonenumber: user.phonenumber, password: hashpassword
+            firstname: user.firstname, lastname: user.lastname, email: user.email, phonenumber: user.phonenumber, password: hashpassword, usertype: user.usertype, image: imageData
         })
         await dbuser.save();
         const existuser = await usermodel.findOne({ phonenumber: user.phonenumber });
@@ -26,13 +37,14 @@ const adduser = async (req, res) => {
         const html = `<h2> 🎉 Welcome abroad 🎉</h2>
                     <p>Thanks for signing up! We're excited to have you with us. Keep an eye on your inbox — we’ll be sending you updates, tips, and more good stuff soon.
                     If you have any questions, feel free to reach out anytime!</p>`
-        console.log(user.email);
+       
         const mailsent = await sentmail(user.email, sub, text, html)
         if (!mailsent) {
             return res.status(400).json({ status: false, data: { message: 'email not sent' } });
         }
         return res.status(200).json({ status: true, data: { message: 'user data successfully.', data: dbuser } });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ status: false, data: { message: 'Internal server error', data: error } });
 
     }
@@ -64,6 +76,18 @@ const loginuser = async (req, res) => {
 const AuthVerify = async (req, res) => {
     return res.status(200).json({ status: true, data: { message: 'Authentication verified', data: req.user } })
 }
-module.exports = { adduser, loginuser, AuthVerify };
+
+const readalluser = async (req, res) => {
+    try {
+        const userdata = await usermodel.find();
+        if (!userdata) {
+            return res.status(400).json({ status: false, data: { message: 'user data is null' } });
+        }
+        return res.status(200).json({ status: true, data: { message: "category read successfully", data: userdata } })
+    } catch (error) {
+        return res.status(500).json({ status: false, data: { message: 'Internal server error.' }, data: error });
+    }
+}
+module.exports = { adduser, loginuser, AuthVerify, readalluser };
 
 

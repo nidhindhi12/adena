@@ -3,7 +3,6 @@ import { Modal, Row, Col, Button, Form, Carousel } from 'react-bootstrap';
 import loginImg1 from '../images/loginImg1.jpg'
 import loginImg2 from '../images/loginImg2.jpg'
 import loginImg3 from '../images/loginImg3.jpg'
-import './Data'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeIsOpen } from '../Store/slice/ModaSlice';
 import { loginfield, signupfield } from './Data';
@@ -13,6 +12,7 @@ import { showToast } from '../Store/slice/ToastSlice';
 import { changeauthvalue } from '../Store/slice/authSlice';
 
 
+
 const Signup_login = () => {
     const imggallery = [loginImg1, loginImg2, loginImg3];
     const [addUser, setAddUser] = useState({});
@@ -20,7 +20,7 @@ const Signup_login = () => {
     const [toggleForm, setToggleForm] = useState(true)
     const dispatch = useDispatch();
     const handleToggleForm = () => setToggleForm(!toggleForm);
-    const auth =useSelector((state)=>state.auth.authvalue);
+    
 
 
     const handleAddUser = (e) => {

@@ -18,7 +18,7 @@ const Mainfooter = () => {
     }
     return (
         <>
-        <div className=' text-center '>
+        <div className=' text-center pt-5'>
              <img src={logo} alt="" width={180} />
         </div>
             <footer style={{ backgroundColor: 'var(--header-bg-color)' }} className=' spacer'>

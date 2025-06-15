@@ -5,16 +5,19 @@ const ToastSlice = createSlice({
     name: "toastbox",
     initialState: {
         type: '',
-        message: ''
+        message: '',
+        id:null,
     },
     reducers: {
         showToast: (state, action) => {
             state.message = action.payload.message,
-            state.type = action.payload.type
+            state.type = action.payload.type,
+            state.id=Date.now();
         },
         closeToast: (state, actions) => {
             state.type = '',
-            state.message = ''
+            state.message = '',
+            state.id=null
         }
     }
 })

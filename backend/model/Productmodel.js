@@ -52,7 +52,6 @@ const productSchema = new mongoose.Schema({
         ref: 'category',
         required: true,
     },
-
     image:
         [
             {

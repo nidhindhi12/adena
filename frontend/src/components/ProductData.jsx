@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { categorydata, genderdata, metaldata, ocassiondata } from '../Store/slice/ProductdataSlice';
+import { showallproduct } from '../Store/slice/FilterSlice';
 
 const ProductData = () => {
     const dispatch = useDispatch();
+
     useEffect(() => {
 
         const categoryData = async () => {
@@ -28,7 +30,7 @@ const ProductData = () => {
         const metalData = async () => {
             try {
                 const res = await axios.get('http://localhost:5000/metal/readmetaldata');
-                
+
                 dispatch(metaldata(res.data.data.data));
             } catch (error) {
                 console.log(error);
@@ -38,13 +40,26 @@ const ProductData = () => {
         const ocassionData = async () => {
             try {
                 const res = await axios.get('http://localhost:5000/ocassion/readocassiondata')
-               
+
                 dispatch(ocassiondata(res.data.data.data));
             } catch (error) {
                 console.log(error);
             }
         }
         ocassionData();
+        const allProduct = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/product/readproducts');
+
+                if (res.data.status) {
+                    dispatch(showallproduct(res.data.data.data));
+
+                }
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+        allProduct();
     }, [])
     return (
         <></>

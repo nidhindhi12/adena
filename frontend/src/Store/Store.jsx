@@ -4,6 +4,8 @@ import offcanvasReducer from './slice/Offcanvas_slice'
 import toastReducer from './slice/ToastSlice'
 import authReducer from './slice/AuthSlice'
 import productdataReducer from './slice/ProductdataSlice'
+import userReducer from './slice/UserSlice'
+import filterproductReducer from './slice/FilterSlice'
 
 
 
@@ -13,7 +15,9 @@ const store = configureStore({
         offcanvasmenu: offcanvasReducer,
         toastbox: toastReducer,
         auth: authReducer,
-        productdata: productdataReducer
+        productdata: productdataReducer,
+        users: userReducer,
+        filterproduct:filterproductReducer
     }
 })
 
