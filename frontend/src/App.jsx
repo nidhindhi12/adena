@@ -9,11 +9,11 @@ import ProductData from './components/ProductData'
 
 const App = () => {
   return (
-    <div style={{backgroundColor:'#FFF9F3'}}>
+    <div style={{ backgroundColor: '#FFF9F3' }}>
       <EndUserroute />
       <Adminroutes />
-      <ProductData/>
-      
+      <ProductData />
+
     </div>
   )
 }

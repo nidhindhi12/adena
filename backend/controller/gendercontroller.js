@@ -3,7 +3,7 @@ const gendermodel = require('../model/gendermodel')
 const addgender = async (req, res) => {
     try {
         const genderdata = req.body;
-        console.log(genderdata);
+       
         if (!genderdata) {
             return res.status(400).json({ status: false, data: { message: " Gender Data is null" } });
         }
@@ -23,7 +23,7 @@ const addgender = async (req, res) => {
 const readgenderdata = async (req, res) => {
     try {
         const genderdata = await gendermodel.find();
-        console.log(genderdata);
+      
         return res.status(200).json({ status: true, data: { message: "product read successfully", data: genderdata } });
     }
     catch (error) {

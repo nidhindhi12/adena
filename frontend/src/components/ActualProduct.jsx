@@ -1,17 +1,33 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { Row, } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
+import { CiHeart, CiSearch } from "react-icons/ci";
+import { PiShoppingBagThin } from "react-icons/pi";
+import 'react-tooltip/dist/react-tooltip.css';
+import ProductView from './ProductView';
+import { toggleproductview } from '../Store/slice/ModaSlice';
+import { useNavigate } from 'react-router-dom';
+import { addToWishlist } from './wishfun';
+import { addcartItems } from '../Store/slice/CartSlice';
+
 
 const ActualProduct = () => {
     const products = useSelector((state) => state.filterproduct.products);
     const isLoading = !products || products.length === 0;
-
+    const dispatch = useDispatch();
+    const handleView = (item) => {
+        dispatch(toggleproductview(item));
+    }
+    const handleaddproduct = (item) => {
+        dispatch(addcartItems(item));
+    }
+    const productview = useSelector((state) => state.modalMenu.productview)
     return (
-        <>
+        <div>
             {
                 isLoading ? (
-                    <div className='loader'>
+                    <div className='loader fs-14'>
                         <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1749984592/Loder-gazelle_zk6pgj.gif" alt="" />
                     </div>
                 ) : (
@@ -19,12 +35,24 @@ const ActualProduct = () => {
                         <p className=' text-center mt-3 fs-5 fw-medium'>Total Products:{products.length}</p>
                         {
                             products.map((item, index) => (
-
-                                <Card style={{ width: '16rem' }} className='mt-4 px-0 border-0 bg-transparent' key={index}>
-
-                                    <Card.Img variant="top" src={item.image[0].url} className='img-fluid'
-                                        style={{ height: '300px', objectFit: 'cover' }} />
-                                    <Card.Body className=' bg-transparent'>
+                                <Card style={{ width: '16rem' }} className='mt-4 px-0 border-0 
+                                13bts
+                                bg-transparent' key={index}>
+                                    <div className='product-image-wrapper'>
+                                        <img src={item.image[0].url} className='img-fluid first-img '
+                                            style={{ height: '300px', objectFit: 'cover', width: '100%' }} />
+                                        <img
+                                            src={item.image[1]?.url || item.image[0].url}
+                                            className='img-fluid hover-img position-absolute top-0 start-0'
+                                            style={{ height: '300px', objectFit: 'cover', width: '100%' }}
+                                            alt='hover' />
+                                        <div className='hover-icons'>
+                                            <span className='icon-border' title='wishlist' onClick={() => addToWishlist(item._id, dispatch)}><CiHeart /></span>
+                                            <span className='mx-3 icon-border' title='add to cart' onClick={() => handleaddproduct(item)}><PiShoppingBagThin /></span>
+                                            <span className=' icon-border' title='quickview' onClick={() => handleView(item)}><CiSearch /></span>
+                                        </div>
+                                    </div>
+                                    <div className=' bg-transparent'>
                                         <h5 className='fs-6 fw-medium text-truncate'>{item.title}</h5>
                                         <Card.Text className=' fw-bold d-flex justify-content-between'>
                                             <span>&#x20B9; {item.price}</span>
@@ -32,16 +60,25 @@ const ActualProduct = () => {
                                                 {item.discount ? `${item.discount} % Off` : ''}
                                             </span>
                                         </Card.Text>
-                                    </Card.Body>
+                                    </div>
+
                                 </Card>
                             ))
+                        }
+                        {
+                            productview && (
+                                <ProductView />
+                            )
                         }
                     </Row>
                 )
             }
-        </>
-
+        </div>
     )
 }
-
 export default ActualProduct
+
+
+
+
+

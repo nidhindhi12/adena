@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, Badge, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/Indriya-Logo.svg'
@@ -11,13 +11,14 @@ import Signup_login from '../components/Signup_login'
 import { offcanvasToggleShow, searchToggleShow } from '../Store/slice/Offcanvas_slice';
 import OffcanvasOptions from './mobile_offcanvas'
 import Searchbox from './Searchbox';
-import { clearLogout } from '../Store/slice/authSlice';
-import { getfilter, filterProductsbByCat } from '../Store/slice/FilterSlice';
+import { clearLogout } from '../Store/slice/AuthSlice';
 import { headerdata } from './Data';
+
 
 
 const Header = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleModal = () => {
         dispatch(changeIsOpen());
     }
@@ -31,21 +32,35 @@ const Header = () => {
         localStorage.removeItem('token');
         dispatch(clearLogout());
     }
-    const handleFilter = async (item) => {
-        dispatch(filterProductsbByCat(item));
+    const handleFilter = (item) => {
+        dispatch(setgetfilter(item));
+    }
+    const handlewishlist = () => {
+
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/wishlist');
+        }
+        else
+            dispatch(changeIsOpen())
     }
     const auth = useSelector((state) => state.auth.authvalue)
     const isOpen = useSelector((state) => state.modalMenu.isopen)
+    const wishlist = useSelector((state) => state.filterproduct.countwishlist);
+    console.log(wishlist);
+
+
+
     return (
         <>
             <Navbar expand="lg" className=" px-4 bg-color text-color">
                 <Container fluid>
                     <Navbar.Brand className='d-none d-lg-block'>
-                        <Link to='/'> <img src={logo} alt="" width={140} /></Link>
+                        <Link to='/'> <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517034/download_qd4tvl.svg   " alt="" width={140} /></Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" className='d-none' />
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav className=" my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>
+                        <Nav className=" my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>z
                             {
                                 headerdata.map((item, index) => (
                                     <Link to="/filterproduct" style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => handleFilter(item)} key={index}>{item}</Link>
@@ -58,17 +73,16 @@ const Header = () => {
                             <Searchbox />
                         </div>
                         <div className='position-relative'>
-                            <Link to='/wishlist'> <RiPokerHeartsLine className=' fs-4' /></Link>
-                            <div className=' position-absolute badge-position d-none'><Badge>0</Badge>
-                            </div>
+                            <p onClick={handlewishlist} className='mb-0'> <RiPokerHeartsLine className=' fs-4' /></p>
+                            <div className=' position-absolute badge-position '><Badge className='rounded-5' style={{ backgroundColor: "var(--icon-color) !important" }}>{wishlist}</Badge></div>
                         </div>
                         <div className=' position-relative'>
-                            <RiUser6Fill className=' fs-4 ' onClick={handleModal} />
+                            <RiUser6Fill className='fs-4' onClick={handleModal} />
                             {
                                 auth ?
-                                    (<div className="position-absolute login-drop z-1" >
-                                        <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '100px' }}>
-                                            <div className=' mb-2'> <span className='text-white'>My Account</span></div>
+                                    (<div className="position-absolute login-drop z-3 text-center" >
+                                        <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '50px', borderRadius:'3px' }}>
+                                            {/* <div className=' mb-2'> <Link to='/myaccount' className='text-white'>My Account</Link></div> */}
                                             <div className=' mb-2'> <span className='text-white cursor' onClick={handleLogout1}>Logout</span></div>
                                         </div>
                                     </div>)
@@ -76,7 +90,7 @@ const Header = () => {
                                     (<Signup_login />)
                             }
                         </div>
-                        <div className=' position-relative'><IoIosCart className=' fs-4' />
+                        <div className=' position-relative' onClick={() => navigate('/cart')}><IoIosCart className=' fs-4' />
                             <div className=' position-absolute badge-position d-none'><Badge>0</Badge></div>
                         </div>
                     </div>

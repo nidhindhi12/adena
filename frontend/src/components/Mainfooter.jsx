@@ -79,7 +79,7 @@ const Mainfooter = () => {
                 <Container>
                     <Row className=' d-flex py-3 align-items-center justify-content-center justify-content-md-between'>
                         <Col style={{ color: 'var(--icon-color)' }} className='text-md-start text-center' xs={12} md={4}> Copyright © 2024. All Right Reserved</Col>
-                        <Col className=' text-center my-3 my-lg-0' xs={12} md={4}><img src={pay} alt="" /></Col>
+                        <Col className=' text-center my-3 my-lg-0' xs={12} md={4}><img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517857/pay_ocvs7g.png" alt="" /></Col>
                         <Col className=' d-flex  justify-content-md-end justify-content-center  gap-2'xs={12} md={4}>
                             <ul className=' d-flex list-unstyled gap-1 mb-0'>
                                 <li ><Link className=' fs-14  rounded-5 text-center bg-icon-color'><FaFacebookF  className='icon'/></Link></li>

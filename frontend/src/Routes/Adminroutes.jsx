@@ -10,6 +10,7 @@ import Metal from '../components/Admin/Metal'
 import Ocassion from '../components/Admin/Ocassion'
 import ProductList from '../components/Admin/ProductList'
 import User from '../components/Admin/User'
+import { AdminProtectedRoutes } from '../utils/Protectedroute'
 
 
 const Adminroutes = () => {

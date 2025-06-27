@@ -9,7 +9,7 @@ import { loginfield, signupfield } from './Data';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { showToast } from '../Store/slice/ToastSlice';
-import { changeauthvalue } from '../Store/slice/authSlice';
+import { changeauthvalue } from'../Store/slice/AuthSlice';
 
 
 
@@ -56,7 +56,7 @@ const Signup_login = () => {
             }
         }
         catch (error) {
-            dispatch(showToast({ message: response.data.data.message, type: 'error' }));
+           dispatch(showToast({ message: error.response?.data?.data?.message, type: "error" }))
 
         }
         dispatch(changeIsOpen());   

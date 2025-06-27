@@ -82,11 +82,7 @@ export const admindropdown = [
     path: '/admin',
     icon: FaTasks
   },
-  {
-    name: 'My messages',
-    path: '/admin',
-    icon: LuMessageSquareText
-  },
+  
 
 ]
 //#endregion

@@ -6,7 +6,10 @@ import { Carousel,Container } from 'react-bootstrap'
 
 const Slider = () => {
     const settings = { dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1, autoplay: true, };
-    const homeSlider = [homeImg2, homeImg1, homeImg3];
+    const homeSlider = [
+      "https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517073/homeImg2_ugreel.jpg"
+        , "https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517506/homeImg1_pepfyc.jpg",
+         "https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517584/homeImg3_ixk6s3.webp"];
     return (
         <div>
             <Container fluid >

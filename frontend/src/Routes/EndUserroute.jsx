@@ -4,6 +4,9 @@ import Wishlist from '../components/Wishlist'
 import Home from "../components/Home"
 import EndUserLayout from '../Layout/EndUserLayout'
 import ShowProducts from '../components/ShowProducts'
+import Cart from '../components/Cart'
+import { Protectedroute } from '../utils/Protectedroute'
+import ActualProduct from '../components/ActualProduct'
 
 const EndUserroute = () => {
     return (
@@ -11,9 +14,10 @@ const EndUserroute = () => {
             <Route path='/' element={<EndUserLayout />}>
                 <Route index element={<Home />} />
                 {/* <Route path/> */}
-                <Route path='/wishlist' element={<Wishlist />} />
-                <Route path='/filterproduct' element={<ShowProducts />} />
-
+                <Route path='/wishlist' element={<Protectedroute><Wishlist /></Protectedroute>} />
+                <Route path='/filterproduct' element={<Protectedroute><ShowProducts /></Protectedroute>} />
+                <Route path='/jewellery' element={<Protectedroute><ActualProduct /></Protectedroute>} />
+                <Route path='/cart' element={<Protectedroute><Cart /></Protectedroute>} />
             </Route>
         </Routes>
     )

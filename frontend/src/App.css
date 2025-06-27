@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap');
+@import url('./components/Product.css');
 
 
 :root {
@@ -10,20 +11,17 @@
   --secondary-font-1: "DM Sans", sans-serif;
   --third-font: "Cedarville Cursive", cursive;
   --header-bg-color: #fff1e2;
-  --hover-color: #2b5198;
+  --hover-color: #030303;
   --btn-hover-color: #d5dcf6;
   --admin-bg-color: #0a0e19;
   --admin-hover: #0c1427;
   --admin-text-hover: #605DFF;
   --admin-icon-color: #8695AA;
   --orange-color: #FD5812;
+  --section-heading: clamp(1.25rem, 3vw, 1.7rem);
+  --accent-color:#f8d3c8;
 }
 
-/* .com .btn-close
-{
-  filter: invert(1) !important;
-  -webkit-filter: invert(1) !important;
-} */
 .fs-13 {
   font-size: 13px;
 }
@@ -186,6 +184,7 @@ a {
   position: absolute;
   background-color: var(--orange-color);
   animation: ripple 1.2s ease-out infinite;
+  -webkit-animation: ripple 1.2s ease-out infinite;
 }
 
 @keyframes ripple {
@@ -358,7 +357,7 @@ a {
   -webkit-transition: width .3s ease-in-out;
   -moz-transition: width .3s ease-in-out;
   -ms-transition: width .3s ease-in-out;
-  -o-transition: .3s;
+  -o-transition: width .3s ease-in-out;
   -webkit-transform: translateX(-50%);
   -moz-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -533,3 +532,41 @@ th {
   -ms-transform: translate(-50%,-50%);
   -o-transform: translate(-50%,-50%);
 }
+.accordion,
+.accordion-item,
+.accordion-header,
+.accordion-button,
+.accordion-button:not(.collapsed),
+.accordion-body {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.accordion-item 
+{
+  border: 0.5px solid var(--accent-color) !important
+}
+.filter-accordion .accordion-button:focus{
+   border: 1px solid var(--accent-color) !important
+}
+.form-check-input:checked {
+  background-color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 5px 2px rgba(219, 151, 130, 0.5)!important;
+}
+.form-check-input {
+  accent-color: var(--accent-color);
+  border: 1px solid var(--accent-color) !important;  
+  box-shadow: none !important;
+}
+.form-check-input[type=radio] {
+    border-radius: 22% !important;
+    -webkit-border-radius: 22% !important;
+    -moz-border-radius: 22% !important;
+    -ms-border-radius: 22% !important;
+    -o-border-radius: 22% !important;
+}
+.icon-color-1
+{
+  color:var(--icon-color)
+}
+

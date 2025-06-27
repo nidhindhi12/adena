@@ -27,16 +27,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'user'
     },
-    addresses: [
-        {
-            street: String,
-            city: String,
-            state: String,
-            zip: String,
-            country: String,
-        }
-    ],
-    image:{
+   
+    image: {
         url: String,
         public_id: String
     }

@@ -5,31 +5,37 @@ const FilterSlice = createSlice({
     name: 'filterproduct',
     initialState: {
         products: [],
-        selectFilter: '',
-        allproducts: []
+        selectedFilter: [],
+        allproducts: [],
+        wishlist: [],
+        getfilter: '',
+        countwishlist:0
     },
     reducers: {
-        filterProductsbByCat: (state, action) => {
-            state.selectFilter = action.payload;
-            const filter = state.selectFilter.toLowerCase();
-            if (filter == 'all') {
-                state.products = state.allproducts;
-            }
-            else {
-                state.products = state.allproducts.filter((item) => {
-                    item.category.toLowerCase() === filter
-                });
-            }
-        },
+
         showallproduct: (state, action) => {
             state.products = action.payload;
             state.allproducts = action.payload;
+
         },
-       
+        addwishlist: (state, action) => {
+            const exists = state.wishlist.some(p => p._id === action.payload._id)
+            if (!exists) {
+                state.wishlist.push(action.payload);
+                localStorage.setItem('wishlist', JSON.stringify(state.wishlist));
+            } else {
+                console.log('already added')
+            }
+        },
+        setgetfilter: (state) => {
+            state.getfilter = state.getfilter
+        },
+        countofwislist:(state, action)=>{
+            state.wishlist=action.payload;
+            state.countwishlist=state.wishlist.length;
+        },
+        
     }
-
 })
-
-
-export const { filterProductsbByCat, showallproduct, getfilter } = FilterSlice.actions
+export const { filterProductsbByCat, showallproduct, setgetfilter,countofwislist,fetchselectedfilter } = FilterSlice.actions
 export default FilterSlice.reducer

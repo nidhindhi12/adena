@@ -9,12 +9,12 @@ const Adminlayout = () => {
   return (
     <>
       <div className='d-md-block d-none' style={{ 'backgroundColor': 'var(  --admin-bg-color)' }}>
-        <Row className=' mx-0'>
-          <Col className='px-0' md={2} style={{ backgroundColor: 'var(--admin-hover)' }} >
+        <Row className=' mx-0 flex-nowrap'>
+          <Col className='px-0' style={{ width: '200px', backgroundColor: 'var(--admin-hover)' }}  >
             <Sidebar />
           </Col>
 
-          <Col className=' position-relative px-0 mx-3 min-vh-100'>
+          <Col className='position-relative px-0 mx-3 min-vh-100' style={{ flex: 4 }}>
             <div> <AdminHeader /></div>
             <div className=' flex-grow-1'><Outlet /></div>
 
@@ -31,7 +31,6 @@ const Adminlayout = () => {
           <Outlet />
         </div>
         <AdminFooter />
-
       </div>
 
 

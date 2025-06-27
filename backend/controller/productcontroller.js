@@ -4,8 +4,8 @@ const categorymodel = require('../model/categorymodel');
 const gendermodel = require('../model/gendermodel');
 const metalmodel = require('../model/metalmodel');
 const ocassionmodel = require('../model/ocassionmodel');
-const fs = require('fs');
 const mongoose = require('mongoose');
+
 
 const addproduct = async (req, res) => {
     try {
