@@ -19,7 +19,7 @@ const ProductSlice = createSlice({
             state.gender = action.payload;
         },
         metaldata: (state, action) => {
-            state.metal = action.payload;
+            state.metal = [...action.payload];
         },
         ocassiondata: (state, action) => {
             state.ocassion = action.payload;

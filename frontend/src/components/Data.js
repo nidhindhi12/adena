@@ -244,5 +244,5 @@ export const chartLineSeries = [
   }
 ]
 
- export const headerdata = ["All Jewellery", "Gold", "Diamond", "Earrings","Rings","Daily Wear","Weddings"];
+ export const headerdata = ["All Jewellery", "Gold", "Diamond", "Earrings","Rings","Daily Wear","Wedding"];
 

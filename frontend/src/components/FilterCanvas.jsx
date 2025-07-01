@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Offcanvas, Accordion, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { sortoffcanvasshow } from '../Store/slice/Offcanvas_slice';
-import {showToast}from '../Store/slice/ToastSlice'
+import { showToast } from '../Store/slice/ToastSlice'
+import { setgetfilter } from '../Store/slice/FilterSlice';
 
 const FilterCanvas = () => {
   const show = useSelector((state) => state.offcanvasmenu.sortShow);
@@ -18,22 +19,23 @@ const FilterCanvas = () => {
     { name: 'Gender', data: genderdata },
     { name: 'Metal', data: metaldata },
     { name: 'Ocassion', data: ocassiondata },
-    { name: 'Sort by price', data: price }
+    {name:"Karatage",data:['18K','22K']}
   ];
   const dispatch = useDispatch();
-  const handleFilter = (filteritem) => {
+  const handleFilter = (type, value) => {
     setSelectedFilters((prev) => {
-      if (!prev.includes(filteritem)) return [...prev, filteritem];
-
-      return prev
+      if (!prev.includes(value)) return [...prev, value];
+      return prev;
     })
+    dispatch(setgetfilter({ type, value }))
     dispatch(sortoffcanvasshow())
   }
- const handleClearFilters=()=>{
-  setSelectedFilters([]);
-  dispatch(showToast({message:'Filters got cleared', type:'success'}))
-  dispatch(sortoffcanvasshow())
- }
+  const handleClearFilters = () => {
+    setSelectedFilters([]);
+    dispatch(setgetfilter({type:null,value:null}));
+    dispatch(showToast({ message: 'Filters got cleared', type: 'success' }))
+    dispatch(sortoffcanvasshow())
+  }
 
 
   return (
@@ -65,7 +67,7 @@ const FilterCanvas = () => {
                           className="mb-2 text-capitalize"
                           id={option._id}
                           name={`${item.name.toLowerCase()}Filter`}
-                          onClick={() => handleFilter(label)}
+                          onClick={() => handleFilter(item.name, label)}
                         />
                       );
                     })

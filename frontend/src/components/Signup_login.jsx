@@ -9,7 +9,7 @@ import { loginfield, signupfield } from './Data';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { showToast } from '../Store/slice/ToastSlice';
-import { changeauthvalue } from'../Store/slice/AuthSlice';
+import { changeauthvalue } from '../Store/slice/AuthSlice';
 
 
 
@@ -20,7 +20,7 @@ const Signup_login = () => {
     const [toggleForm, setToggleForm] = useState(true)
     const dispatch = useDispatch();
     const handleToggleForm = () => setToggleForm(!toggleForm);
-    
+
 
 
     const handleAddUser = (e) => {
@@ -49,17 +49,19 @@ const Signup_login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/loginuser', addUser);
+
             if (response.data.status) {
-                localStorage.setItem("token", response.data.data.token)
+                localStorage.setItem("token", response.data.data.token);
+                localStorage.setItem("user", JSON.stringify(response.data.data.data));
                 dispatch(showToast({ message: response.data.data.message, type: 'success' }));
-                dispatch(changeauthvalue());
+                dispatch(changeauthvalue(response.data.data.data));
+            
             }
         }
         catch (error) {
-           dispatch(showToast({ message: error.response?.data?.data?.message, type: "error" }))
-
+            dispatch(showToast({ message: error.response?.data?.data?.message, type: "error" }))
         }
-        dispatch(changeIsOpen());   
+        dispatch(changeIsOpen());
     }
     return (
         <>
@@ -93,6 +95,7 @@ const Signup_login = () => {
                                                         }} onChange={handleAddUser}
                                                     />
                                                 </Form.Group>
+                                                
                                             ))}
                                         </Row>
                                     ))}

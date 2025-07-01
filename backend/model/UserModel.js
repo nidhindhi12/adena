@@ -27,10 +27,24 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'user'
     },
-   
-    image: {
-        url: String,
-        public_id: String
+     streetaddress: {
+        type: String,
+
+    },
+    country: {
+        type: String
+    },
+    state: {
+        type: String,
+
+    },
+    town: {
+        type: String,
+
+    },
+    pincode: {
+        type: Number,
+
     }
 
 })

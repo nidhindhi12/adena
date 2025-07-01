@@ -21,7 +21,7 @@ const OffCanvasSlice = createSlice({
         },
         sortoffcanvasshow: (state) => {
             state.sortShow = !state.sortShow
-            console.log(state.sortShow)
+            
         }
     }
 })

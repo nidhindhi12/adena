@@ -2,19 +2,16 @@ import { Modal, Row, Col, Carousel, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleproductview } from '../Store/slice/ModaSlice'
 import { CiHeart } from "react-icons/ci";
-import { MdOutlineAdd } from "react-icons/md";
-import { FiMinus } from "react-icons/fi";
+import { handleaddproduct } from './Addproduct';
 import { IoMdClose } from "react-icons/io";
-import { useNavigate } from 'react-router-dom';
+
 
 
 const ProductView = () => {
     const productview = useSelector((state) => state.modalMenu.productview)
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const quickviewproduct = useSelector((state) => state.modalMenu.quickview)
-
-
+    
     return (
         <>
             <Modal centered animation={false} size='lg' show={productview} onHide={() => dispatch(toggleproductview())}>
@@ -47,18 +44,12 @@ const ProductView = () => {
                                     </div>
                                     <span className=' fs-13'>{quickviewproduct.description}</span>
                                     <div className=' d-flex gap-3'>
-                                        <span style={{ color: ' #e4562e' }} className=' fs-14'>Karatage: {quickviewproduct.karatage}</span>
+                                        <span style={{ color: ' #e4562e' }} className=' fs-14'>Karatage: {quickviewproduct.karatage>'0'?quickviewproduct.karatage:'-'}</span>
                                         <span style={{ color: ' #e4562e' }} className=' fs-14'>Size: {quickviewproduct.size}</span>
                                     </div>
                                     <div className='d-flex justify-content-center mt-3 cursor gap-4 mb-2'>
-                                            {/* <div className='d-flex border-raidus'>
-                                                <p className='mb-0'><FiMinus /></p>
-                                                <p className='px-4 mb-0'>0</p>
-                                                <p className='mb-0'><MdOutlineAdd /></p>
-
-                                            </div> */}
-                                        <div className='border-raidus ms-2'>
-                                            <p className='mb-0 text-nowrap'>Add to Cart</p>
+                                             <div className='border-raidus ms-2'>
+                                            <p className='mb-0 text-nowrap' onClick={()=>handleaddproduct(quickviewproduct,dispatch)}>Add to Cart</p>
                                         </div>
 
                                     </div>

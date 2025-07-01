@@ -9,6 +9,7 @@ import offcanvasgif from '../images/offcanvas.gif'
 import samavapattern from '../images/Samava-Pattern.svg'
 import Signup_login from '../components/Signup_login'
 import { changeIsOpen } from '../Store/slice/ModaSlice';
+import { clearLogout } from '../Store/slice/AuthSlice';
 
 function OffCanvasMobile({ name, ...props }) {
   const offcanvasShow = useSelector((state) => state.offcanvasmenu.toggleShow);
@@ -27,6 +28,14 @@ function OffCanvasMobile({ name, ...props }) {
     else
       dispatch(changeIsOpen())
   }
+  const handleLogout1 = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('items');
+    navigate('/')
+    dispatch(clearLogout());
+    dispatch(offcanvasToggleShow())
+  }
+
   return (
     <>
       <Offcanvas show={offcanvasShow} onHide={() => dispatch(offcanvasToggleShow())} {...props} className='bg-color custom-canvas'>
@@ -47,7 +56,7 @@ function OffCanvasMobile({ name, ...props }) {
             <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517723/offcanvas_adstjm.gif" alt="" width={170} />
             <div style={{ 'backgroundColor': "var(--icon-color)" }} className=' text-start text-white pt-2 position-relative pb-60'>
               <p className='px-3 cursor' onClick={handlewishlist}>Wishlist</p>
-              <p className=' px-3' style={{ cursor: 'pointer' }} onClick={handleModal}>Login/Sign Up</p>
+              <p className=' px-3' style={{ cursor: 'pointer' }} onClick={handleLogout1}>Logout</p>
               <Signup_login />
 
               <p className='px-3 '><input type="search" placeholder='search...' className=' w-100' /></p>

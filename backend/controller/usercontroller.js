@@ -13,19 +13,9 @@ const adduser = async (req, res) => {
             return res.status(400).json({ status: false, data: { message: 'user is null' } });
         }
         const hashpassword = bcrypt.hashSync(user.password, 10);
-        
-        const imageData = req.file
-            ? {
-                url: req.file.path,
-                public_id: req.file.filename, // Cloudinary gives `filename` as public_id
-            }
-            : null;
-
-        if (!imageData) {
-            return res.status(400).json({ status: false, data: { message: 'User Image is null' } });
-        }
         const dbuser = new usermodel({
-            firstname: user.firstname, lastname: user.lastname, email: user.email, phonenumber: user.phonenumber, password: hashpassword, usertype: user.usertype, image: imageData
+            firstname: user.firstname, lastname: user.lastname, email: user.email, phonenumber: user.phonenumber, password: hashpassword, usertype: user.usertype,
+            // image: imageData
         })
         await dbuser.save();
         const existuser = await usermodel.findOne({ phonenumber: user.phonenumber });
@@ -37,7 +27,7 @@ const adduser = async (req, res) => {
         const html = `<h2> 🎉 Welcome abroad 🎉</h2>
                     <p>Thanks for signing up! We're excited to have you with us. Keep an eye on your inbox — we’ll be sending you updates, tips, and more good stuff soon.
                     If you have any questions, feel free to reach out anytime!</p>`
-       
+
         const mailsent = await sentmail(user.email, sub, text, html)
         if (!mailsent) {
             return res.status(400).json({ status: false, data: { message: 'email not sent' } });
@@ -88,6 +78,25 @@ const readalluser = async (req, res) => {
         return res.status(500).json({ status: false, data: { message: 'Internal server error.' }, data: error });
     }
 }
-module.exports = { adduser, loginuser, AuthVerify, readalluser };
+const updateuser = async (req, res) => {
+    try {
+        const userid = req.params.id;
+        console.log(userid);
+        if (!userid) {
+            return res.status(400).json({ status: false, data: { message: 'user data is null' } });
+        }
+        const user = req.body;
+        const dbuser = await usermodel.updateOne({ _id: userid }, {
+            firstname: user.firstname, lastname: user.lastname, email: user.email, phonenumber: user.phonenumber, usertype: user.usertype, streetaddress: user.streetaddress,
+            town: user.town, state: user.state, country: user.country, pincode: user.pincode
+        })
+        return res.status(200).json({ status: true, data: { message: 'User updated successfully', data: dbuser } });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: false, data: { message: 'Internal server error.' }, data: error });
+    }
+
+}
+module.exports = { adduser, loginuser, AuthVerify, readalluser, updateuser };
 
 

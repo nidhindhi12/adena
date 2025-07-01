@@ -48,14 +48,14 @@ a {
   color: var(--icon-color);
 }
 
-.navhover a {
+.navhover  {
   color: var(--icon-color) !important;
   border: 1px solid transparent;
   font-weight: 600;
 }
 
-.navhover a:hover {
-  color: var(--hover-color) !important;
+.navhover :hover {
+  color: var(--icon-color) !important;
 
   border-bottom: 1px solid red;
 }

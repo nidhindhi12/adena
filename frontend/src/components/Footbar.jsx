@@ -7,6 +7,7 @@ import { RiShoppingCart2Fill } from "react-icons/ri";
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import Signup_login from './Signup_login';
+import { changeIsOpen } from '../Store/slice/ModaSlice';
 
 
 
@@ -26,7 +27,7 @@ const Footbar = () => {
                                 </Link>
                             </li>
                             <li className=' px-2 py-1  rounded'>
-                                <Link to="/products">
+                                <Link to="filterproduct/All Jewellery">
                                     <AiFillProduct className=' fs-3 icon-color-1' />
                                 </Link>
                             </li>
@@ -34,7 +35,6 @@ const Footbar = () => {
                                 <p onClick={() => dispatch(changeIsOpen())} className=' mb-0'>
                                     <TiUser className=' fs-1 icon-color-1' />
                                 </p>
-                                <Signup_login/>
                             </li>
                             <li className=' position-relative px-2 py-1'>
                                 <Link to="/cart" className='d-flex align-items-center'>

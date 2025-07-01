@@ -9,7 +9,8 @@ const modalSlice = createSlice({
         selectedCat: {},
         productmodel: false,
         productview:false,
-        quickview:{}
+        quickview:{},
+        addressmodel:false
     },
     reducers: {
         changeIsOpen: (state) => {
@@ -30,11 +31,14 @@ const modalSlice = createSlice({
         toggleproductview:(state,action)=>{
             state.productview=!state.productview,
             state.quickview=action.payload
+        },
+        togggleaddressmodel:(state,action)=>{
+            state.addressmodel=! state.addressmodel
         }
 
 
     }
 })
 
-export const { changeIsOpen, changeAdminmodal, fetchSelectedCatId, toggleproductmodel,toggleproductview } = modalSlice.actions
+export const { changeIsOpen, changeAdminmodal, fetchSelectedCatId, toggleproductmodel,toggleproductview,togggleaddressmodel } = modalSlice.actions
 export default modalSlice.reducer 

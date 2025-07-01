@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import { Container, Badge, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/Indriya-Logo.svg'
@@ -13,6 +12,7 @@ import OffcanvasOptions from './mobile_offcanvas'
 import Searchbox from './Searchbox';
 import { clearLogout } from '../Store/slice/AuthSlice';
 import { headerdata } from './Data';
+import Wishlist from '../components/Wishlist'
 
 
 
@@ -26,20 +26,26 @@ const Header = () => {
         dispatch(offcanvasToggleShow())
     }
     const handleSearch = () => {
-        dispatch(searchToggleShow());
+        const token = localStorage.getItem('token');
+        if (token) {
+            dispatch(searchToggleShow());
+        }
+        else
+            dispatch(changeIsOpen())
     }
+
+
     const handleLogout1 = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('items');
+        navigate('/')
         dispatch(clearLogout());
     }
-    const handleFilter = (item) => {
-        dispatch(setgetfilter(item));
-    }
-    const handlewishlist = () => {
+    const handlewishlist = (item) => {
 
         const token = localStorage.getItem('token');
         if (token) {
-            navigate('/wishlist');
+            navigate(`/${item}`);
         }
         else
             dispatch(changeIsOpen())
@@ -47,8 +53,6 @@ const Header = () => {
     const auth = useSelector((state) => state.auth.authvalue)
     const isOpen = useSelector((state) => state.modalMenu.isopen)
     const wishlist = useSelector((state) => state.filterproduct.countwishlist);
-    console.log(wishlist);
-
 
 
     return (
@@ -60,20 +64,21 @@ const Header = () => {
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" className='d-none' />
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav className=" my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>z
+                        <div className="d-flex my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>
                             {
                                 headerdata.map((item, index) => (
-                                    <Link to="/filterproduct" style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => handleFilter(item)} key={index}>{item}</Link>
+
+                                    <h6 key={index} style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => navigate(`filterproduct/${item}`)} className='cursor navhover' >{item}</h6>
                                 ))
                             }
-                        </Nav>
+                        </div>
                     </Navbar.Collapse>
                     <div className="header-icons d-flex gap-2 justify-content-end text-color fw-bold d-none d-lg-flex">
                         <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} />
                             <Searchbox />
                         </div>
                         <div className='position-relative'>
-                            <p onClick={handlewishlist} className='mb-0'> <RiPokerHeartsLine className=' fs-4' /></p>
+                            <p onClick={() => handlewishlist('wishlist')} className='mb-0'> <RiPokerHeartsLine className=' fs-4' /></p>
                             <div className=' position-absolute badge-position '><Badge className='rounded-5' style={{ backgroundColor: "var(--icon-color) !important" }}>{wishlist}</Badge></div>
                         </div>
                         <div className=' position-relative'>
@@ -81,8 +86,8 @@ const Header = () => {
                             {
                                 auth ?
                                     (<div className="position-absolute login-drop z-3 text-center" >
-                                        <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '50px', borderRadius:'3px' }}>
-                                            {/* <div className=' mb-2'> <Link to='/myaccount' className='text-white'>My Account</Link></div> */}
+                                        <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '50px', borderRadius: '3px' }}>
+
                                             <div className=' mb-2'> <span className='text-white cursor' onClick={handleLogout1}>Logout</span></div>
                                         </div>
                                     </div>)
@@ -90,8 +95,8 @@ const Header = () => {
                                     (<Signup_login />)
                             }
                         </div>
-                        <div className=' position-relative' onClick={() => navigate('/cart')}><IoIosCart className=' fs-4' />
-                            <div className=' position-absolute badge-position d-none'><Badge>0</Badge></div>
+                        <div className=' position-relative' onClick={() => handlewishlist('cart')}><IoIosCart className=' fs-4' />
+                            <div className=' position-absolute badge-position d-none'><Badge></Badge></div>
                         </div>
                     </div>
                     <div className='d-flex d-lg-none justify-content-between align-items-center w-100 '>
@@ -102,6 +107,7 @@ const Header = () => {
                     </div>
                 </Container>
             </Navbar>
+
         </>
     )
 }

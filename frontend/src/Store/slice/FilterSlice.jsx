@@ -8,8 +8,9 @@ const FilterSlice = createSlice({
         selectedFilter: [],
         allproducts: [],
         wishlist: [],
-        getfilter: '',
-        countwishlist:0
+        getfilter: [],
+        countwishlist: 0,
+        searchTerm:''
     },
     reducers: {
 
@@ -27,15 +28,19 @@ const FilterSlice = createSlice({
                 console.log('already added')
             }
         },
-        setgetfilter: (state) => {
-            state.getfilter = state.getfilter
+        setgetfilter: (state, action) => {
+            state.getfilter =action.payload;
+            console.log(state.getfilter);
         },
-        countofwislist:(state, action)=>{
-            state.wishlist=action.payload;
-            state.countwishlist=state.wishlist.length;
+        countofwislist: (state, action) => {
+            state.wishlist = action.payload;
+            state.countwishlist = state.wishlist.length;
         },
-        
+        storeSearchTerm:(state,action)=>{
+            state.searchTerm=action.payload
+        }
+
     }
 })
-export const { filterProductsbByCat, showallproduct, setgetfilter,countofwislist,fetchselectedfilter } = FilterSlice.actions
+export const { filterProductsbByCat, showallproduct, setgetfilter, countofwislist, fetchselectedfilter,storeSearchTerm } = FilterSlice.actions
 export default FilterSlice.reducer

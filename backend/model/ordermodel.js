@@ -17,27 +17,6 @@ const ordermodel = new mongoose.Schema({
             required: true
         }
     }],
-    address: {
-        type: String,
-        required: true
-    },
-    country: {
-        type: String
-    },
-    state: {
-        type: String,
-        required: true
-    },
-    town: {
-        type:String,
-        required:true
-    },
-    pincode: {
-        type:Number,
-        required:true
-    }
-
-
 }, { timestamps: true })
 
 module.exports = mongoose.model('order', ordermodel);

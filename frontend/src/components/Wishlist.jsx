@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../Store/slice/ToastSlice';
 import { countofwislist } from '../Store/slice/FilterSlice';
+import { handleaddproduct } from './Addproduct';
 
 const Wishlist = () => {
   const [wishlistproducts, setWishlistProducts] = useState([]);
@@ -112,7 +113,7 @@ const Wishlist = () => {
                         </div>
                       </Card.Text>
                       <div className=' text-center wishlist'>
-                        <Button className='text-uppercase mt-2 btn-size'>Move to Cart</Button>
+                        <Button className='text-uppercase mt-2 btn-size' onClick={()=>handleaddproduct(item, dispatch)}>Move to Cart</Button>
                       </div>
                     </div>
                   </Card>

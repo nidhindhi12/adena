@@ -15,8 +15,8 @@ const EndUserroute = () => {
                 <Route index element={<Home />} />
                 {/* <Route path/> */}
                 <Route path='/wishlist' element={<Protectedroute><Wishlist /></Protectedroute>} />
-                <Route path='/filterproduct' element={<Protectedroute><ShowProducts /></Protectedroute>} />
-                <Route path='/jewellery' element={<Protectedroute><ActualProduct /></Protectedroute>} />
+                <Route path='/filterproduct/:itemName' element={<Protectedroute><ShowProducts /></Protectedroute>} />
+               
                 <Route path='/cart' element={<Protectedroute><Cart /></Protectedroute>} />
             </Route>
         </Routes>
