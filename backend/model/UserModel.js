@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema({
     pincode: {
         type: Number,
 
+    },
+   isVerified: {
+        type:Boolean,
+        default:false,  
     }
 
 })

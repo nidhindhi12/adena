@@ -1,6 +1,6 @@
 const express = require('express');
-const { addmetal, readmetaldata, deletemetal, getmetalwithproductcount, updatemetal } = require('../controller/metalcontroller');
 const router = express.Router();
+const { addmetal, readmetaldata, deletemetal, getmetalwithproductcount, updatemetal } = require('../controller/metalcontroller');
 
 
 router.post('/addmetal', addmetal);

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import Teaser from './Teaser';
+import { Link } from 'react-router-dom';
 
 const Categories = () => {
   const data = [
@@ -21,14 +22,18 @@ const Categories = () => {
         <Row className=' justify-content-center text-lg-center'>
           {
 
-            data.map((item,index) => (
+            data.map((item, index) => (
 
-              <Col key={index}>
-                <div className='img-box'>
-                  <img src={item.url} alt="" style={{ width: '250px', height: '300px' }} className='rounded-3 zoom-img ' />
-                </div>
-                <p className=' fs-5 fw-medium' style={{ fontFamily: 'var(--secondary-font)' }}>{item.name}</p>
-
+              <Col key={index} className=' d-flex justify-content-center'>
+                <Link
+                to={`/filterproduct/${item.name.toLowerCase() === 'ankelets' ? 'anklets' : item.name.toLowerCase()}`}
+                  className='text-decoration-none'
+                >
+                  <div className='img-box'>
+                    <img src={item.url} alt="" style={{ width: '250px', height: '300px' }} className='rounded-3 zoom-img ' />
+                  </div>
+                  <p className=' fs-5 fw-medium text-center' style={{ fontFamily: 'var(--secondary-font)',color:'var(--icon-color)' }}>{item.name}</p>
+                </Link>
               </Col>
             ))
           }

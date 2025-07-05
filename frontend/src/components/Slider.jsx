@@ -5,7 +5,7 @@ import homeImg3 from '../images/homeImg3.webp'
 import { Carousel,Container } from 'react-bootstrap'
 
 const Slider = () => {
-    const settings = { dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1, autoplay: true, };
+    const settings = { dots: true, infinite: true, speed: 1000, slidesToShow: 1, slidesToScroll: 1, autoplay: true, };
     const homeSlider = [
       "https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517073/homeImg2_ugreel.jpg"
         , "https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517506/homeImg1_pepfyc.jpg",

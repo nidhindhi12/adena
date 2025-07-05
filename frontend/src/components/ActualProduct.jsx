@@ -12,29 +12,51 @@ import { handleaddproduct } from './Addproduct';
 
 const ActualProduct = () => {
     const products = useSelector((state) => state.filterproduct.products);
+    console.log('pppp',products)
     const isLoading = !products || products.length === 0;
     const dispatch = useDispatch();
     const { itemName } = useParams();
     const searchTerm = useSelector((state) => state.filterproduct.searchTerm);
     const getFilterType = (itemName) => {
-        const map = {
-            gold: 'metal',
-            diamond: 'metal',
-            earrings: 'category',
-            rings: 'category',
-            'daily wear': 'ocassion',
-            wedding: 'ocassion'
-        };
-        return map[itemName.toLowerCase().trim()] || null;
+    const map = {
+        gold: 'metal',
+        diamond: 'metal',
+        silver: 'metal',
+        platinum: 'metal',
+        earrings: 'category',
+        rings: 'category',
+        chains: 'category',
+        bracelets: 'category',
+        bangles: 'category',
+        anklets: 'category',
+        mangalsutras: 'category',
+        necklaces: 'category',
+        'daily wear': 'ocassion',
+        wedding: 'ocassion',
+        party: 'ocassion',
+        festive: 'ocassion',
+        men: 'gender',
+        women: 'gender',
+        kids: 'gender',
+        '18k': 'karatage',
+        '22k': 'karatage',
     };
+
+    return map[itemName.toLowerCase().trim()] || null;
+};
+
     const filteritem = getFilterType(itemName);
+    
     // navbar filter
     let filterproducts = filteritem ? products.filter((item) => item[filteritem]?.toLowerCase().trim() === itemName.toLowerCase().trim()) : products;
+  
     // filter canvas
     const filterItem = useSelector((state) => state.filterproduct.getfilter);
     const filteredFinal = filterItem?.type && filterItem?.value ? filterproducts.filter(item =>
         item[filterItem.type.toLowerCase()]?.toLowerCase().trim() === filterItem.value.toLowerCase().trim()) : filterproducts;
     filterproducts = filteredFinal;
+
+      console.log('gggg',filteredFinal)
     // search logic
     let filtered = products
     if (searchTerm) {
@@ -59,8 +81,7 @@ const ActualProduct = () => {
                         {
                             filterproducts.map((item, index) => (
                                 <Card style={{ width: '16rem' }} className='mt-4 px-0 border-0 
-                                13bts
-                                bg-transparent' key={index}>
+                                card-shadow bg-transparent' key={index}>
                                     <div className='product-image-wrapper'>
                                         <img src={item.image[0].url} className='img-fluid first-img '
                                             style={{ height: '300px', objectFit: 'cover', width: '100%' }} />
@@ -76,8 +97,8 @@ const ActualProduct = () => {
                                         </div>
                                     </div>
                                     <div className=' bg-transparent'>
-                                        <h5 className='fs-6 fw-medium text-truncate'>{item.title}</h5>
-                                        <Card.Text className=' fw-bold d-flex justify-content-between'>
+                                        <h5 className='fs-6 p-2 fw-medium text-truncate'>{item.title}</h5>
+                                        <Card.Text className=' fw-bold d-flex justify-content-between px-2 pb-'>
                                             <span>&#x20B9; {item.price}</span>
                                             <span className='text-danger'>
                                                 {item.discount ? `${item.discount} % Off` : ''}
@@ -95,6 +116,7 @@ const ActualProduct = () => {
     )
 }
 export default ActualProduct
+
 
 
 

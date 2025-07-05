@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { categorydata, genderdata, metaldata, ocassiondata } from '../Store/slice/ProductdataSlice';
-import { showallproduct } from '../Store/slice/FilterSlice';
+import { countofwislist, showallproduct } from '../Store/slice/FilterSlice';
 
 const ProductData = () => {
     const dispatch = useDispatch();
@@ -60,10 +60,26 @@ const ProductData = () => {
             }
         };
         allProduct();
-    }, [])
-    return (
-        <></>
-    )
+        const fetchApi = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await axios.get('http://localhost:5000/wishlist/getwishlist', {
+                headers: {
+                    authorization: `Bearer ${token}`
+                },
+            })
+            dispatch(countofwislist(res.data.data.data));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    fetchApi()
+}, [])
+return (
+    <></>
+)
+
+    
 }
 
 export default ProductData

@@ -11,7 +11,7 @@ const FilterCanvas = () => {
   const genderdata = useSelector((state) => state.productdata.gender);
   const metaldata = useSelector((state) => state.productdata.metal);
   const ocassiondata = useSelector((state) => state.productdata.ocassion);
-  const price = ['Low To High', 'High to Low']
+  
   const [selectedFilters, setSelectedFilters] = useState([])
 
   const data = [

@@ -15,18 +15,22 @@ const adduser = async (req, res) => {
         const hashpassword = bcrypt.hashSync(user.password, 10);
         const dbuser = new usermodel({
             firstname: user.firstname, lastname: user.lastname, email: user.email, phonenumber: user.phonenumber, password: hashpassword, usertype: user.usertype,
-            // image: imageData
         })
         await dbuser.save();
+        // generate token for verify
+        const token = Jwt.sign({ _id: dbuser._id, }, JWT_SECRET, { expiresIn: '1d' });
+
+        const verifylink = `http://localhost:5173/verify-email/${token}`;
         const existuser = await usermodel.findOne({ phonenumber: user.phonenumber });
         if (!existuser) {
             return res.status(400).json({ status: false, data: { message: 'User doesnt exists' } });
         }
-        const sub = "Welcome to our App";
+        const sub = "Welcome to our Website";
         const text = `Hii! ${user.firstname} ${user.lastname} thanks for signing up !!`;
-        const html = `<h2> 🎉 Welcome abroad 🎉</h2>
-                    <p>Thanks for signing up! We're excited to have you with us. Keep an eye on your inbox — we’ll be sending you updates, tips, and more good stuff soon.
-                    If you have any questions, feel free to reach out anytime!</p>`
+        const html = `<h2>Verify your email</h2>
+            <p>Click the button below to verify your email:</p>
+            <a href="${verifylink}" style="padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none;">Verify Email</a>
+            <p>If you didn’t request this, you can ignore this email.</p>`;
 
         const mailsent = await sentmail(user.email, sub, text, html)
         if (!mailsent) {
@@ -81,7 +85,7 @@ const readalluser = async (req, res) => {
 const updateuser = async (req, res) => {
     try {
         const userid = req.params.id;
-        console.log(userid);
+
         if (!userid) {
             return res.status(400).json({ status: false, data: { message: 'user data is null' } });
         }
@@ -93,10 +97,72 @@ const updateuser = async (req, res) => {
         return res.status(200).json({ status: true, data: { message: 'User updated successfully', data: dbuser } });
     } catch (error) {
         console.log(error);
+        console.log(error);
         return res.status(500).json({ status: false, data: { message: 'Internal server error.' }, data: error });
     }
 
 }
-module.exports = { adduser, loginuser, AuthVerify, readalluser, updateuser };
+const verifyemail = async (req, res) => {
+    const token = req.params.token;
+    if (!token) {
+        return res.status(400).json({ status: false, message: 'token is null' });
+    }
+    try {
+        const decoded = Jwt.verify(token, JWT_SECRET);
+        const userId = decoded._id;
+        await usermodel.findByIdAndUpdate(userId, { isVerified: true });
+        return res.status(200).json({ status: true, data: { message: 'Email verified successfully' } });
+    } catch (error) {
+        return res.status(400).json({ status: false, data: { message: 'Invalid or expired verification link.' } });
+    }
+}
+const resetpasswordlink = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await usermodel.findOne({ _id: userId });
+        if (!user) {
+            return res.status(400).json({ status: false, data: { message: 'User not found' } });
+        }
+        const token = Jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '15m' });
+          const resetlink = `http://localhost:5173/reset-password/${user._id}/${token}`;
+        await sentmail(user.email, 'Password Reset', `Click the link to reset your password: ${resetlink}`);
+        return res.json({ status: true, message: 'Password reset link sent to your email' });
+
+    } catch (error) {
+        return res.status(500).json({ status: false, message: 'Error sending reset email', error: error.message });
+    }
+}
+const resetpassword = async (req, res) => {
+    const { userID, token } = req.params;
+    const { Newpassword } = req.body;
+    if (!token) {
+        return res.status(400).json({ status: false, message: 'token is null' });
+    }
+    if (!userID) {
+        return res.status(400).json({ status: false, data: { message: 'User ID is null' } });
+    }
+    if (!email) {
+        return res.status(400).json({ status: false, data: { message: 'Email is null' } });
+    }
+    try {
+        const decoded = Jwt.verify(token, JWT_SECRET);
+        const user_id = decoded._id;
+        if (user_id !== userID) {
+            return res.status(401).json({ message: 'Unauthorized or invalid token' });
+        }
+        const user =  await usermodel.findOne({ _id: userID })
+        if (!user) {
+            return res.status(400).json({ status: false, data: { message: 'User not found' } });
+        }
+        user.password = await bcrypt.hash(Newpassword, 10);
+        await user.save();
+        return res.json({ status: true, message: 'Password reset successful' });
+    } catch (error) {
+        return res.status(400).json({ status: false, data: { message: 'Failed to reset password' } });
+
+    }
+}
+module.exports = { adduser, loginuser, AuthVerify, readalluser, updateuser, verifyemail, resetpassword, resetpasswordlink };
 
 

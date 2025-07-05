@@ -4,7 +4,7 @@ import { toggleproductview } from '../Store/slice/ModaSlice'
 import { CiHeart } from "react-icons/ci";
 import { handleaddproduct } from './Addproduct';
 import { IoMdClose } from "react-icons/io";
-
+import { addToWishlist } from './wishfun';
 
 
 const ProductView = () => {
@@ -34,7 +34,7 @@ const ProductView = () => {
                                 <div className=' p-2 icon-color'>
                                     <div className=' d-flex align-items-center gap-3'>
                                         <h5 style={{ fontFamily: 'var(--secondary-font)', color: 'var(--icon-color)' }} className=' fs-3 fw-light  '>{quickviewproduct.title}</h5>
-                                        <span className='fs-4 cursor'><CiHeart /></span>
+                                        <span className='fs-4 cursor'onClick={() => addToWishlist(quickviewproduct._id, dispatch)}><CiHeart /></span>
                                     </div>
                                     <div className=' d-flex gap-2 align-items-center'>
                                         <p className='fs-5 fw-bold mb-0' style={{ color: 'var(--icon-color)' }}>&#x20B9;{quickviewproduct.price}</p>

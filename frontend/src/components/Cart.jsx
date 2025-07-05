@@ -6,12 +6,14 @@ import { FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { togggleaddressmodel } from '../Store/slice/ModaSlice';
 import Address from './Address';
+import { useNavigate } from 'react-router-dom';
+import { showToast } from '../Store/slice/ToastSlice';
 
 const Cart = () => {
     const dispatch = useDispatch();
     const [cartItems, setCartItems] = useState([]);
-    const userredux = useSelector((state) => state.auth.users)
-
+    const userredux = useSelector((state) => state.auth.users);
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"));
     const user_id = user ? user._id : null;
     useEffect(() => {
@@ -41,7 +43,18 @@ const Cart = () => {
         setCartItems(updatedItems);
         localStorage.setItem('items', JSON.stringify(updatedItems));
     }
+    const handleCheckout = async () => {
+        if (!cartItems.length) {
+            return dispatch(showToast({ message: "Cart is empty!", type: 'warning' }));
+        }
+        if (userredux.streetaddress && userredux.state && userredux.town && userredux.country && userredux.pincode) {
+            navigate('/checkout')
+        }
+        else {
+            dispatch(showToast({ message: "Please Add Your Shipping Details ", type: 'warning' }))
 
+        }
+    }
     const pricesbeforediscount = cartItems.map(item => item.price * item.qty).reduce((sum, x) => sum + x, 0);
     const totaldiscount = Math.round(cartItems.map(item => ((item.price * item.discount) / 100) * item.qty).reduce((sum, x) => sum + x, 0));
 
@@ -56,19 +69,26 @@ const Cart = () => {
                     <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1749888603/PLP-Flower-Icon_zthbyq.svg" alt="" className=' position-absolute img-pos' />
                 </div>
                 {
-
                     cartItems.length > 0 ? (
                         <Row className='mt-4' >
                             <Col lg={8}>
                                 {
                                     cartItems.map((item, index) => (
                                         <div className=' mt-3'>
-                                            <div className="product-img d-flex gap-4 p-3" style={{ border: '1px solid var(--orange-color)' }}>
-                                                <div>
+                                            <div className="product-img d-flex flex-column flex-sm-row gap-4 p-3" style={{ border: '1px solid var(--orange-color)' }}>
+                                                <div className='text-center d-none d-sm-block'>
                                                     <img src={item.image?.[0].url} alt="" style={{ width: '120px' }} />
                                                 </div>
+                                                <div className='text-center d-block d-sm-none'>
+                                                    <img src={item.image?.[0].url} alt="" style={{ width: '50%' }} />
+                                                </div>
                                                 <div>
-                                                    <p className=' fw-medium mb-0' style={{ fontFamily: 'var(--secondary-font)', color: 'var(--icon-color)' }}>{item.title}</p>
+                                                    <div className=' d-flex gap-3 align-items-center justify-content-start'>
+                                                        <p className=' fw-medium mb-0' style={{ fontFamily: 'var(--secondary-font)', color: 'var(--icon-color)' }}>{item.title}</p>
+                                                        <div className=' text-start cursor d-md-none' onClick={() => handleRemoveItem(item)}>
+                                                            <FaTrashAlt className='text-danger' />
+                                                        </div>
+                                                    </div>
                                                     <span style={{ textDecoration: item.discount > 0 ? 'line-through' : 'none' }}>
                                                         &#x20B9; {item.price}
                                                     </span>
@@ -83,10 +103,10 @@ const Cart = () => {
                                                             </>
                                                         )}
                                                     </span>
-                                                    <div className=' d-flex align-items-center gap-5'>
-                                                        <p className=' mb-0'> Karatge: <span className=' fw-medium'>{item.karatage > '0' ? item.karatage : '-'}</span></p>
+                                                    <div className='d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2  gap-md-5'>
+                                                        <p className=' mb-0 text-nowrap'> Karatge: <span className=' fw-medium'>{item.karatage > '0' ? item.karatage : '-'}</span></p>
                                                         <p className=' mb-0'>Quantity: <span className='fw-medium'>{item.qty}</span></p>
-                                                        <div className='d-flex border-raidus '>
+                                                        <div className='d-flex border-raidus'>
                                                             <p className='mb-0 cursor       ' onClick={() => handleIncreaseQty(item)}><MdOutlineAdd /></p>
                                                             <p className='px-4 mb-0'>
                                                                 {item.qty}
@@ -94,7 +114,7 @@ const Cart = () => {
                                                             <p className='mb-0 cursor' onClick={() => handleDecreaseQty(item)}><FiMinus /></p>
                                                         </div>
                                                     </div>
-                                                    <div className=' text-start cursor' onClick={() => handleRemoveItem(item)}>
+                                                    <div className=' text-start cursor d-none d-md-flex' onClick={() => handleRemoveItem(item)}>
                                                         <FaTrashAlt className='text-danger' />
                                                     </div>
                                                 </div>
@@ -113,8 +133,8 @@ const Cart = () => {
                                     <div className='border-raidus mx-2 mt-5 cursor'>
                                         <p className='mb-0  text-nowrap' onClick={() => dispatch(togggleaddressmodel())}>Add Shipping Details</p>
                                     </div>
-                                     <div className='border-raidus mx-2 mt-2 cursor'>
-                                        <p className='mb-0  text-nowrap'>Checkout</p>
+                                    <div className='border-raidus mx-2 mt-2 cursor'>
+                                        <p className='mb-0  text-nowrap' onClick={handleCheckout}>Checkout</p>
                                     </div>
                                     <Address />
                                 </div>

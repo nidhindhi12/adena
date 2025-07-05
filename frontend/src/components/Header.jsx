@@ -1,114 +1,136 @@
-import { Container, Badge, Nav, Navbar } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../images/Indriya-Logo.svg'
-import { RiPokerHeartsLine, RiUser6Fill, RiMenu3Line } from "react-icons/ri";
-import { IoIosCart } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
-import { useDispatch, useSelector } from 'react-redux';
-import { changeIsOpen } from '../Store/slice/ModaSlice';
-import Signup_login from '../components/Signup_login'
-import { offcanvasToggleShow, searchToggleShow } from '../Store/slice/Offcanvas_slice';
-import OffcanvasOptions from './mobile_offcanvas'
-import Searchbox from './Searchbox';
-import { clearLogout } from '../Store/slice/AuthSlice';
-import { headerdata } from './Data';
-import Wishlist from '../components/Wishlist'
+    import { Container, Badge, Nav, Navbar } from 'react-bootstrap';
+    import { Link, useNavigate } from 'react-router-dom';
+    import logo from '../images/Indriya-Logo.svg'
+    import { RiPokerHeartsLine, RiUser6Fill, RiMenu3Line } from "react-icons/ri";
+    import { IoIosCart } from "react-icons/io";
+    import { FiSearch } from "react-icons/fi";
+    import { useDispatch, useSelector } from 'react-redux';
+    import { changeIsOpen } from '../Store/slice/ModaSlice';
+    import Signup_login from '../components/Signup_login'
+    import { offcanvasToggleShow, searchToggleShow } from '../Store/slice/Offcanvas_slice';
+    import OffcanvasOptions from './mobile_offcanvas'
+    import Searchbox from './Searchbox';
+    import axios from 'axios'
+    import { clearLogout } from '../Store/slice/AuthSlice';
+    import { headerdata } from './Data';
+    import { useEffect, useState } from 'react';
 
-
-
-const Header = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const handleModal = () => {
-        dispatch(changeIsOpen());
-    }
-    const handleOffcanvas = () => {
-        dispatch(offcanvasToggleShow())
-    }
-    const handleSearch = () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            dispatch(searchToggleShow());
+    const Header = () => {
+        const dispatch = useDispatch();
+        const navigate = useNavigate();
+        const handleModal = () => {
+            dispatch(changeIsOpen());
         }
-        else
-            dispatch(changeIsOpen())
-    }
-
-
-    const handleLogout1 = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('items');
-        navigate('/')
-        dispatch(clearLogout());
-    }
-    const handlewishlist = (item) => {
-
-        const token = localStorage.getItem('token');
-        if (token) {
-            navigate(`/${item}`);
+        const handleOffcanvas = () => {
+            dispatch(offcanvasToggleShow())
         }
-        else
-            dispatch(changeIsOpen())
+        const handleSearch = () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                dispatch(searchToggleShow());
+            }
+            else
+                dispatch(changeIsOpen())
+        }
+        const handleLogout1 = () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('items');
+            localStorage.removeItem('user');
+
+            navigate('/')
+            dispatch(clearLogout());
+        }
+        const handlewishlist = (item) => {
+
+            const token = localStorage.getItem('token');
+            if (token) {
+                navigate(`/${item}`);
+            }
+            else
+                dispatch(changeIsOpen())
+        }
+        const auth = useSelector((state) => state.auth.authvalue)
+        const isOpen = useSelector((state) => state.modalMenu.isopen)
+        const wishlist = useSelector((state) => state.filterproduct.countwishlist);
+        const cart = JSON.parse(localStorage.getItem("items"))
+        const user = JSON.parse(localStorage.getItem('user'));
+        const [wishlistproducts, setWishlistproducts] = useState([])
+
+        return (
+            <>
+                <Navbar expand="lg" className=" px-4 bg-color text-color">
+                    <Container fluid>
+                        <Navbar.Brand className='d-none d-lg-block'>
+                            <Link to='/'> <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517034/download_qd4tvl.svg   " alt="" width={140} /></Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle aria-controls="navbarScroll" className='d-none' />
+                        <Navbar.Collapse id="navbarScroll">
+                            <div className="d-flex my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>
+                                {
+                                    headerdata.map((item, index) => (
+
+                                        <h6 key={index} style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => navigate(`filterproduct/${item}`)} className='cursor navhover' >{item}</h6>
+                                    ))
+                                }
+                            </div>
+                        </Navbar.Collapse>
+                        <div className="header-icons d-flex gap-2 justify-content-end text-color fw-bold d-none d-lg-flex">
+                            <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} />
+                                <Searchbox />
+                            </div>
+                            <div className='position-relative'>
+                                <p onClick={() => handlewishlist('wishlist')} className='mb-0'> <RiPokerHeartsLine className=' fs-4' /></p>
+                                <div className=' position-absolute badge-position '><Badge className='rounded-5' style={{ backgroundColor: "var(--icon-color) !important" }}>{wishlist}</Badge></div>
+                            </div>
+                            {
+                                auth ? (
+                                    <div className="position-relative">
+                                        <p className="fs-5 px-2  ms-3 mb-0 cursor  rounded-5 text-white curdor" style={{ backgroundColor: "var(--icon-color)" }} onClick={handleModal}>
+                                            {user.firstname?.charAt(0).toUpperCase()}
+                                        </p>
+                                        {isOpen && (
+                                            <div
+                                                className="position-absolute login-drop z-3 ps-2 pt-2"
+                                                style={{
+                                                    backgroundColor: 'var(--admin-hover)',
+                                                    
+                                                    height: '70px',
+                                                    borderRadius: '3px',
+                                                }}
+                                            >
+                                                <p className="text-white cursor mb-0" onClick={handleLogout1}>
+                                                    Logout
+                                                </p>
+
+                                                <p className="text-white cursor mb-0" onClick={()=>navigate(`/reset-password-link/:user._id`)}>
+                                                    Reset Password
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <RiUser6Fill className="fs-4 cursor-pointer" onClick={handleModal} />
+                                        <Signup_login />
+                                    </div>
+                                )
+                            }
+                            <div className=' position-relative' onClick={() => handlewishlist('cart')}>
+                                <p className='mb-0'><IoIosCart className='fs-4' /></p>
+
+                                <div className='position-absolute badge-position'><Badge className=' rounded-5' style={{ backgroundColor: "var(--icon-color) !important" }}>{cart?.length}</Badge></div>
+                            </div>
+                        </div>
+                        <div className='d-flex d-lg-none justify-content-between align-items-center w-100 '>
+                            <RiMenu3Line className='fs-4 ' onClick={handleOffcanvas} />
+                            < OffcanvasOptions />
+                            <Link to='/'> <img src={logo} alt="" width={140} /></Link>
+                            <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} /></div>
+                        </div>
+                    </Container>
+                </Navbar>
+
+            </>
+        )
     }
-    const auth = useSelector((state) => state.auth.authvalue)
-    const isOpen = useSelector((state) => state.modalMenu.isopen)
-    const wishlist = useSelector((state) => state.filterproduct.countwishlist);
-
-
-    return (
-        <>
-            <Navbar expand="lg" className=" px-4 bg-color text-color">
-                <Container fluid>
-                    <Navbar.Brand className='d-none d-lg-block'>
-                        <Link to='/'> <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1750517034/download_qd4tvl.svg   " alt="" width={140} /></Link>
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="navbarScroll" className='d-none' />
-                    <Navbar.Collapse id="navbarScroll">
-                        <div className="d-flex my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>
-                            {
-                                headerdata.map((item, index) => (
-
-                                    <h6 key={index} style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => navigate(`filterproduct/${item}`)} className='cursor navhover' >{item}</h6>
-                                ))
-                            }
-                        </div>
-                    </Navbar.Collapse>
-                    <div className="header-icons d-flex gap-2 justify-content-end text-color fw-bold d-none d-lg-flex">
-                        <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} />
-                            <Searchbox />
-                        </div>
-                        <div className='position-relative'>
-                            <p onClick={() => handlewishlist('wishlist')} className='mb-0'> <RiPokerHeartsLine className=' fs-4' /></p>
-                            <div className=' position-absolute badge-position '><Badge className='rounded-5' style={{ backgroundColor: "var(--icon-color) !important" }}>{wishlist}</Badge></div>
-                        </div>
-                        <div className=' position-relative'>
-                            <RiUser6Fill className='fs-4' onClick={handleModal} />
-                            {
-                                auth ?
-                                    (<div className="position-absolute login-drop z-3 text-center" >
-                                        <div className={isOpen ? 'd-block' : 'd-none'} style={{ backgroundColor: 'var(--admin-hover)', padding: '10px 20px', height: '50px', borderRadius: '3px' }}>
-
-                                            <div className=' mb-2'> <span className='text-white cursor' onClick={handleLogout1}>Logout</span></div>
-                                        </div>
-                                    </div>)
-                                    :
-                                    (<Signup_login />)
-                            }
-                        </div>
-                        <div className=' position-relative' onClick={() => handlewishlist('cart')}><IoIosCart className=' fs-4' />
-                            <div className=' position-absolute badge-position d-none'><Badge></Badge></div>
-                        </div>
-                    </div>
-                    <div className='d-flex d-lg-none justify-content-between align-items-center w-100 '>
-                        <RiMenu3Line className='fs-4 ' onClick={handleOffcanvas} />
-                        < OffcanvasOptions />
-                        <Link to='/'> <img src={logo} alt="" width={140} /></Link>
-                        <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} /></div>
-                    </div>
-                </Container>
-            </Navbar>
-
-        </>
-    )
-}
-export default Header
+    export default Header

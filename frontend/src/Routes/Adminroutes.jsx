@@ -17,7 +17,7 @@ const Adminroutes = () => {
     return (
         <>
             <Routes>
-                <Route path="/admin" element={<Adminlayout />}>
+                <Route path="/admin" element={<Adminlayout/>}>
                     <Route index element={<Dashboard />} />
                     <Route path='/admin/dashboard' element={<Dashboard />} />
                     <Route path='/admin/user' element={<User/>} />
@@ -29,6 +29,20 @@ const Adminroutes = () => {
                     <Route path='/admin/productlist' element={<ProductList />} />
                 </Route>
             </Routes>
+            {/* <Routes>
+                <Route path="/admin" element={<AdminProtectedRoutes><Adminlayout /></AdminProtectedRoutes>}>
+                    <Route index element={<Dashboard />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="user" element={<User />} />
+                    <Route path="products" element={<Product />} />
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="category" element={<Category />} />
+                    <Route path="metal" element={<Metal />} />
+                    <Route path="ocassion" element={<Ocassion />} />
+                    <Route path="productlist" element={<ProductList />} />
+                </Route>
+            </Routes> */}
+
         </>
     )
 }

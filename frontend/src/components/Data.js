@@ -82,7 +82,7 @@ export const admindropdown = [
     path: '/admin',
     icon: FaTasks
   },
-  
+
 
 ]
 //#endregion
@@ -244,5 +244,7 @@ export const chartLineSeries = [
   }
 ]
 
- export const headerdata = ["All Jewellery", "Gold", "Diamond", "Earrings","Rings","Daily Wear","Wedding"];
+export const headerdata = ["All Jewellery", "Gold", "Diamond", "Earrings", "Rings", "Daily Wear", "Wedding"];
+export const paymentdata = ['Cash Delivery', "UPI ID", "EMI Payments", "Debit Card", "Credit Card"];
+
 

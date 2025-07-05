@@ -45,7 +45,6 @@ const removewishlist = async (req, res) => {
     const deletedItem = await wishlistmodel.deleteOne({
       user: userId,
       product: productObjectId
-
     });
     if (!deletedItem) {
       return res.status(404).json({

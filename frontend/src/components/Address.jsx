@@ -9,29 +9,32 @@ const Address = () => {
     const address = useSelector((state) => state.modalMenu.addressmodel);
     const dispatch = useDispatch();
     const userredux = useSelector((state) => state.auth.users)
-
-    const [shippingAd, setShippingAd] = useState({ streetaddress: '', town: '', state: "", country: '', pincode: '' });
+    const [shippingAd, setShippingAd] = useState({ streetaddress:'', town: '', state: "", country: '', pincode: '' });
     const isFormValid = Object.values(shippingAd).every((value) => value.trim() !== '');
     const handleAddress = (e) => {
         setShippingAd({
             ...shippingAd, [e.target.name]: e.target.value
         })
     }
-    const handleSubmit = async(e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response =  await axios.put(`http://localhost:5000/api/updateuser/${userredux._id}`, shippingAd);
-            console.log(response);
+            const response = await axios.put(`http://localhost:5000/api/updateuser/${userredux._id}`, shippingAd);
+           
             if (response.data.status) {
-                dispatch(showToast({message:'Address added successfully',type:'success'}))
+                dispatch(showToast({ message: 'Address added successfully', type: 'success' }))
                 dispatch(togggleaddressmodel());
+                const updatedUser = { ...userredux, ...shippingAd };
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+
                 setShippingAd({
-                    streetaddress: '', town: '', state: "", country: '', pincode: '' 
+                    streetaddress: '', town: '', state: "", country: '', pincode: ''
                 })
             }
             else {
-                dispatch(showToast({message:'Address failed to add',type:'error'}));
-              
+                dispatch(showToast({ message: 'Address failed to add', type: 'error' }));
+
             }
 
         } catch (error) {
@@ -49,7 +52,7 @@ const Address = () => {
                         <Form.Group className="mb-3" controlId="formAddress">
                             <Form.Control type="text" placeholder="Street Address" style={{
                                 border: 'none', borderBottom: '1px solid red', borderRadius: '0', boxShadow: 'none', backgroundColor: '#FFF9F3'
-                            }} value={shippingAd.street} onChange={handleAddress} name='street' />
+                            }} value={shippingAd.streetaddress} onChange={handleAddress} name='streetaddress' />
                         </Form.Group>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridTown">
@@ -79,7 +82,7 @@ const Address = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer style={{ backgroundColor: '#FFF9F3' }} className="d-flex justify-content-center">
-                    <Button className='mb-0 text-nowrap fw-medium' style={{ backgroundColor: 'var(--icon-color)', width: '100px', height: '50px' }}  onClick={handleSubmit}>Checkout</Button>
+                    <Button className='mb-0 text-nowrap fw-medium' style={{ backgroundColor: 'var(--icon-color)', width: '100px', height: '50px' }}  disabled={!isFormValid} onClick={handleSubmit}>Checkout</Button>
                 </Modal.Footer>
             </Modal>
         </>

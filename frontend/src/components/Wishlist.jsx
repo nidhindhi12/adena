@@ -11,8 +11,8 @@ import { handleaddproduct } from './Addproduct';
 
 const Wishlist = () => {
   const [wishlistproducts, setWishlistProducts] = useState([]);
-  
-  const isLoading = !wishlistproducts || wishlistproducts.length === 0; 
+
+  const isLoading = !wishlistproducts || wishlistproducts.length === 0;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -25,27 +25,28 @@ const Wishlist = () => {
           },
         })
         if (res.data.status) {
-           setWishlistProducts(res.data.data.data);
-           dispatch(countofwislist(res.data.data.data)); 
-         
+          setWishlistProducts(res.data.data.data);
+          dispatch(countofwislist(res.data.data.data));
+
 
         }
       } catch (error) {
         console.log(error?.res?.data?.data?.message);
-        
+
       }
     }
     fetchWishlist();
   }, [])
 
-  
-  
-  const handleDelete = async (id) => {
+
+
+  const handleDelete = async (id,productId) => {
 
     const token = localStorage.getItem('token');
+    
 
     try {
-      const res = await axios.delete(`http://localhost:5000/wishlist/removewishlist/${id}`, {
+      const res = await axios.delete(`http://localhost:5000/wishlist/removewishlist/${productId}`, {
         headers: {
           authorization: `Bearer ${token}`
         }
@@ -53,10 +54,11 @@ const Wishlist = () => {
       console.log(res);
       if (res.data.status) {
         dispatch(showToast({ message: res.data.data.message, type: 'success' }));
-        setWishlistProducts(prev =>
-          prev.filter(item => item._id !== id)
-         );
-        dispatch(countofwislist(wishlistproducts)); 
+        const updatedWishlist = wishlistproducts.filter(item => item.product._id !== productId);
+        console.log(updatedWishlist)
+        setWishlistProducts(updatedWishlist);
+        dispatch(countofwislist(updatedWishlist));
+        
       }
     } catch (error) {
       console.log(error);
@@ -85,7 +87,7 @@ const Wishlist = () => {
               <h4 style={{ 'fontFamily': "var()" }} className='fs-3'>Your Wishlist is empty</h4>
               <p className=' mb-0' style={{ color: '#555555', letterSpacing: '1px' }}> Add items that you like to your wishlist. Review </p>
               <p style={{ color: '#555555', letterSpacing: '2px' }}>them anytime and easily move them to the bag.</p>
-              <Button className=' btn-size' onClick={() => navigate('/filterproduct')}>Browse Products</Button>
+              <Button className=' btn-size' onClick={() => navigate('/filterproduct/"All Jewellery"')}>Browse Products</Button>
             </div>
           ) : (
 
@@ -108,12 +110,12 @@ const Wishlist = () => {
                       <h5 className='fs-6 fw-medium text-truncate'>{item.product.title}</h5>
                       <Card.Text className=' fw-bold d-flex justify-content-between align-items-center cursor'>
                         <span>&#x20B9; {item.product.price}</span>
-                        <div className=' position-absolute end-0  rounded-5 ' onClick={() => handleDelete(item._id)}>
+                        <div className=' position-absolute end-0  rounded-5 ' onClick={() => handleDelete(item._id,item.product._id)}>
                           <FaTrashAlt className='text-danger' />
                         </div>
                       </Card.Text>
                       <div className=' text-center wishlist'>
-                        <Button className='text-uppercase mt-2 btn-size' onClick={()=>handleaddproduct(item, dispatch)}>Move to Cart</Button>
+                        <Button className='text-uppercase mt-2 btn-size' onClick={() => handleaddproduct(item, dispatch)}>Move to Cart</Button>
                       </div>
                     </div>
                   </Card>

@@ -514,7 +514,7 @@ th {
 }
 .loader
 {
-      background: rgba(255, 249, 243, .7);
+      background: rgba(255, 249, 243, 2.7);
       position: fixed;
       height: 100%;
       width: 100%;
@@ -568,5 +568,9 @@ th {
 .icon-color-1
 {
   color:var(--icon-color)
+}
+.card-shadow
+{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;;
 }
 

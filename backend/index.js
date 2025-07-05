@@ -7,6 +7,7 @@ const categoryroutes =require('./routes/categoryroutes')
 const genderroutes =require('./routes/genderroutes')
 const metalroutes=require('./routes/metalroutes')
 const ocassionroutes =require('./routes/ocassionroutes')
+const orderroutes = require('./routes/orderroutes');
 const wishlistroutes=require('./routes/wishlistroutes');
 
 
@@ -23,6 +24,7 @@ app.use('/gender',genderroutes);
 app.use('/metal',metalroutes);
 app.use('/ocassion',ocassionroutes)
 app.use('/wishlist',wishlistroutes);
+app.use('/order',orderroutes);
 
 
 const startServer= async()=>{

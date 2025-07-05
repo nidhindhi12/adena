@@ -24,10 +24,62 @@ export const Protectedroute = ({ children }) => {
 
 }
 
+// export const AdminProtectedRoutes = ({ children }) => {
+//     const auth = useSelector((state) => state.auth.authvalue);
+//     console.log('dshjh',auth)
+
+//     const user = useSelector((state) => state.auth.users);
+//     console.log(user.usertype);
+//     const [redirectPath, setRedirectPath] = useState('');
+
+//     useEffect(() => {
+//         if (!auth || user?.usertype !== 'admin') {
+//             setRedirectPath('/');
+//         }
+//     }, [auth, user]);
+
+//     if (redirectPath) {
+//         return <Navigate to={redirectPath} replace />;
+//     }
+
+//     return children;
+// };
+// export const AdminProtectedRoutes = ({ children }) => {
+//     const auth = useSelector((state) => state.auth.authvalue); // correct key from your store
+//     const user = useSelector((state) => state.auth.users);     // correct key from your store
+//     const [isChecking, setIsChecking] = useState(true);        // to handle loading phase
+//     const [redirectPath, setRedirectPath] = useState('');
+
+//     useEffect(() => {
+//         if (auth === undefined || user === undefined) return;
+
+//         // Wait until auth and user are available
+//         if (!auth || user.usertype !== 'admin') {
+//             setRedirectPath('/');
+//         }
+
+//         setIsChecking(false);
+//     }, [auth, user]);
+
+//     if (isChecking) {
+//         return <div>Loading...</div>; // prevent premature redirect
+//     }
+
+//     if (redirectPath) {
+//         return <Navigate to={redirectPath} replace />;
+//     }
+
+//     return (
+//         <>
+//             {children}
+//         </>
+//     )
+// };
+
 export const AdminProtectedRoutes = ({ children }) => {
-    
-    const auth = useSelector((state) => state.auth.auth);
-    const user = useSelector((state) => state.auth.user);
+
+    const auth = useSelector((state) => state.auth.authvalue); // correct key from your store
+    const user = useSelector((state) => state.auth.users);
     const [redirectpath, setredirectpath] = useState('')
 
     useEffect(() => {
@@ -47,3 +99,4 @@ export const AdminProtectedRoutes = ({ children }) => {
         </>
     )
 }
+
