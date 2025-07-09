@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import { Form, Button } from 'react-bootstrap';
 
 const ResetPassword = () => {
     const { userId, token } = useParams();
@@ -13,8 +14,14 @@ const ResetPassword = () => {
             const response = await axios.post(`http://localhost:5000/api/reset-password/${userId}/${token}`, {
                 newPassword
             });
-            alert(response.data.message);
-            navigate('/login');
+            if (response.data.status) {
+                showToast({ message: response.data.data.message, type: 'success' })
+            }
+            else {
+                showToast({ message: response.data.data.message, type: 'success' })
+            }
+
+           
         } catch (err) {
             console.error(err);
             alert(err.response?.data?.message || 'Something went wrong');
@@ -22,19 +29,24 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h3>Reset Password</h3>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="password"
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Reset Password</button>
-            </form>
-        </div>
+        <>
+            <div className=" d-flex  flex-column justify-content-center align-items-center gap-5 vh-100  " >
+
+                <h3>Reset Password</h3>
+                <Form onSubmit={handleSubmit} >
+                    <div style={{ maxWidth: '500px' }} className='pb-3 '>
+                        <Form.Label>
+                            New Password
+                        </Form.Label>
+                        <Form.Control type="password" placeholder=" New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+
+                    </div>
+                    <Button onClick={handleSubmit}> Reset Password</Button>
+                </Form>
+            </div>
+
+
+        </>
     );
 };
 

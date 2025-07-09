@@ -25,7 +25,7 @@ const EndUserroute = () => {
             </Route>
             <Route path='/orderplaced' element={<Orderplaced />} />
             <Route path='/verify-email/:token' element={<EmailVerify />} />
-            <Route path="/c/:userId'" element={<ResetPassword />} />
+            <Route path="/reset-password/:userId/:token" element={<ResetPassword />} />
 
 
         </Routes >

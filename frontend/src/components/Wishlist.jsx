@@ -40,10 +40,10 @@ const Wishlist = () => {
 
 
 
-  const handleDelete = async (id,productId) => {
+  const handleDelete = async (id, productId) => {
 
     const token = localStorage.getItem('token');
-    
+
 
     try {
       const res = await axios.delete(`http://localhost:5000/wishlist/removewishlist/${productId}`, {
@@ -55,10 +55,9 @@ const Wishlist = () => {
       if (res.data.status) {
         dispatch(showToast({ message: res.data.data.message, type: 'success' }));
         const updatedWishlist = wishlistproducts.filter(item => item.product._id !== productId);
-        console.log(updatedWishlist)
         setWishlistProducts(updatedWishlist);
         dispatch(countofwislist(updatedWishlist));
-        
+
       }
     } catch (error) {
       console.log(error);
@@ -110,12 +109,12 @@ const Wishlist = () => {
                       <h5 className='fs-6 fw-medium text-truncate'>{item.product.title}</h5>
                       <Card.Text className=' fw-bold d-flex justify-content-between align-items-center cursor'>
                         <span>&#x20B9; {item.product.price}</span>
-                        <div className=' position-absolute end-0  rounded-5 ' onClick={() => handleDelete(item._id,item.product._id)}>
+                        <div className=' position-absolute end-0  rounded-5 ' onClick={() => handleDelete(item._id, item.product._id)}>
                           <FaTrashAlt className='text-danger' />
                         </div>
                       </Card.Text>
                       <div className=' text-center wishlist'>
-                        <Button className='text-uppercase mt-2 btn-size' onClick={() => handleaddproduct(item, dispatch)}>Move to Cart</Button>
+                        <Button className='text-uppercase mt-2 btn-size' onClick={() => handleaddproduct(item.product, dispatch)}>Move to Cart</Button>
                       </div>
                     </div>
                   </Card>

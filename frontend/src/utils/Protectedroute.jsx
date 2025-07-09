@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { showToast } from '../Store/slice/ToastSlice';
 
 export const Protectedroute = ({ children }) => {
@@ -80,23 +80,21 @@ export const AdminProtectedRoutes = ({ children }) => {
 
     const auth = useSelector((state) => state.auth.authvalue); // correct key from your store
     const user = useSelector((state) => state.auth.users);
+    console.log(auth)
     const [redirectpath, setredirectpath] = useState('')
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-        if (!auth) {
-            setredirectpath('/');
-        }
-        else if (user.usertype !== 'admin') {
-            setredirectpath('/');
+        // If not authenticated or not an admin, redirect home
+        if (!auth || user.usertype !== "admin") {
+            navigate("/", { replace: true });
         }
     }, [auth, user]);
 
-    if (redirectpath) return <Navigate to='/' replace></Navigate>
+    return <>{children}</>;
+};
 
-    return (
-        <>
-            {children}
-        </>
-    )
-}
+
+
 

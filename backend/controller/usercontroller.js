@@ -119,14 +119,27 @@ const verifyemail = async (req, res) => {
 const resetpasswordlink = async (req, res) => {
     const { userId } = req.params;
 
+
     try {
         const user = await usermodel.findOne({ _id: userId });
+        console.log('user', user);
         if (!user) {
             return res.status(400).json({ status: false, data: { message: 'User not found' } });
         }
         const token = Jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '15m' });
-          const resetlink = `http://localhost:5173/reset-password/${user._id}/${token}`;
-        await sentmail(user.email, 'Password Reset', `Click the link to reset your password: ${resetlink}`);
+        const resetlink = `http://localhost:5173/reset-password/${user._id}/${token}`;
+        // await sentmail(user.email, 'Password Reset', `Click the link to reset your password: ${resetlink}`);
+        const sub = "Reset Password";
+        const text = 'Click on this link below';
+        const html = `
+            <p>Click the button below to reset password</p>
+            <a href="${resetlink}" style="padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none;">Verify Email</a>
+            <p>If you didn’t request this, you can ignore this email.</p>`;
+
+        const mailsent = await sentmail(user.email, sub, text, html)
+        if (!mailsent) {
+            return res.status(400).json({ status: false, data: { message: 'email not sent' } });
+        }
         return res.json({ status: true, message: 'Password reset link sent to your email' });
 
     } catch (error) {
@@ -134,28 +147,29 @@ const resetpasswordlink = async (req, res) => {
     }
 }
 const resetpassword = async (req, res) => {
-    const { userID, token } = req.params;
-    const { Newpassword } = req.body;
+    const { userId, token } = req.params;
+    console.log(userId)
+    console.log(token)
+    const { newPassword } = req.body;
+    console.log(newPassword);
     if (!token) {
         return res.status(400).json({ status: false, message: 'token is null' });
     }
-    if (!userID) {
+    if (!userId) {
         return res.status(400).json({ status: false, data: { message: 'User ID is null' } });
     }
-    if (!email) {
-        return res.status(400).json({ status: false, data: { message: 'Email is null' } });
-    }
+
     try {
         const decoded = Jwt.verify(token, JWT_SECRET);
-        const user_id = decoded._id;
-        if (user_id !== userID) {
+        const user_id = decoded.userId;
+        if (user_id !== userId) {
             return res.status(401).json({ message: 'Unauthorized or invalid token' });
         }
-        const user =  await usermodel.findOne({ _id: userID })
+        const user = await usermodel.findOne({ _id: userId })
         if (!user) {
             return res.status(400).json({ status: false, data: { message: 'User not found' } });
         }
-        user.password = await bcrypt.hash(Newpassword, 10);
+        user.password = await bcrypt.hash(newPassword, 10);
         await user.save();
         return res.json({ status: true, message: 'Password reset successful' });
     } catch (error) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { LuMenu } from "react-icons/lu";
 import { Row, Col, Container, Form } from 'react-bootstrap'
-import { IoSearch, IoLanguage,IoLogOutSharp } from "react-icons/io5";
+import { IoSearch, IoLanguage, IoLogOutSharp } from "react-icons/io5";
 import { IoMdSunny, IoIosSettings, IoMdNotificationsOutline } from "react-icons/io";
 import admin from '../../images/admin-logo.svg';
 import { FaAngleDown } from "react-icons/fa";
@@ -36,14 +36,17 @@ const AdminHeader = () => {
           <Col md={7}>
             <div className=' d-flex justify-content-center justify-content-lg-end gap-3 align-items-center mt-2'>
               <IoMdSunny style={{ color: '#fe7a36' }} className=' fs-4' />
-              <IoLanguage className=' icon-color fs-4' />
+
+              <div style={{ display: 'inline-block',width:'25px' }} id="google_translate_element"></div>
+                <IoLanguage className=' icon-color fs-4' />
+
               <div className='  position-relative'>
                 <IoMdNotificationsOutline className=' icon-color fs-4' />
                 <div className=' dot rounded-3'></div>
               </div>
               <div className=' position-relative' onClick={handleDropdown} role='button'>
                 <img src={admin} alt="" width={35} className='dp-border' />
-                <span className=' text-white fw-semibold ms-2'>Olivia</span>
+                <span className=' text-white fw-semibold ms-2'id="google_translate_element" >Olivia</span>
                 <span className=' icon-color ms-1'><FaAngleDown /></span>
                 {
                   showDropdown && (
@@ -59,6 +62,7 @@ const AdminHeader = () => {
                         <ul className=' list-unstyled py-3 gap-3'>
                           <li className=' admin-li-hover px-3 py-2' >
                             <span className='pe-3 text-white icon-color'><IoLogOutSharp /></span>
+                            
                             <Link to='#' className=' text-white'>Logout</Link>
                           </li>
 

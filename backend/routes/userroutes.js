@@ -13,9 +13,7 @@ router.post('/authverify', Auth, AuthVerify)
 router.get('/readalluser', readalluser)
 router.put('/updateuser/:id',updateuser)
 router.get('/verify-email/:token',verifyemail)
-
-router.post('/reset-password/:userID/:token', resetpassword);
-
-
+router.post('/reset-password-link/:userId', resetpasswordlink);
+router.post('/reset-password/:userId/:token', resetpassword);    
 module.exports = router;
     

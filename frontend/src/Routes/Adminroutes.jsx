@@ -10,14 +10,14 @@ import Metal from '../components/Admin/Metal'
 import Ocassion from '../components/Admin/Ocassion'
 import ProductList from '../components/Admin/ProductList'
 import User from '../components/Admin/User'
-import { AdminProtectedRoutes } from '../utils/Protectedroute'
+import { AdminProtectedRoutes} from '../utils/Protectedroute'
 
 
 const Adminroutes = () => {
     return (
         <>
             <Routes>
-                <Route path="/admin" element={<Adminlayout/>}>
+                <Route path="/admin" element={<AdminProtectedRoutes><Adminlayout/></AdminProtectedRoutes>}>
                     <Route index element={<Dashboard />} />
                     <Route path='/admin/dashboard' element={<Dashboard />} />
                     <Route path='/admin/user' element={<User/>} />
