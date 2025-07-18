@@ -76,24 +76,58 @@ export const Protectedroute = ({ children }) => {
 //     )
 // };
 
+// export const AdminProtectedRoutes = ({ children }) => {
+
+//     // const auth = useSelector((state) => state.auth.authvalue); // correct key from your store
+//     const user = useSelector((state) => state.auth.users);
+//     const token = localStorage.getItem('token');
+
+//     const [redirectpath, setredirectpath] = useState('')
+
+//     const navigate = useNavigate();
+
+//     useEffect(() => {
+//         if (!token && user.usertype !== 'admin') {
+//             setredirectpath('/')
+//         }
+//         else {
+//             setredirectpath('/admin')
+//         }
+//     }, [token, user]);
+//     return <Navigate to={redirectpath} replace />;
+
+//     return <>{children}</>;
+// };
+
 export const AdminProtectedRoutes = ({ children }) => {
 
-    const auth = useSelector((state) => state.auth.authvalue); // correct key from your store
-    const user = useSelector((state) => state.auth.users);
-    console.log(auth)
-    const [redirectpath, setredirectpath] = useState('')
+  const user = useSelector((state) => state.auth.users);
+  const token = localStorage.getItem('token');
 
-    const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = useState(null); // null for initial load
 
-    useEffect(() => {
-        // If not authenticated or not an admin, redirect home
-        if (!auth || user.usertype !== "admin") {
-            navigate("/", { replace: true });
-        }
-    }, [auth, user]);
+  useEffect(() => {
+    if (!token || user?.usertype !== 'admin') {
+      setIsAuthorized(false);
+    } else {
+      setIsAuthorized(true);
+    }
+  }, [token, user]);
 
-    return <>{children}</>;
+  // Still loading / verifying
+  if (isAuthorized === null) {
+    return null; // Or a spinner if needed
+  }
+
+  // Unauthorized
+  if (!isAuthorized) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Authorized
+  return <>{children}</>;
 };
+
 
 
 

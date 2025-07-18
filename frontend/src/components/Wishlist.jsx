@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../Store/slice/ToastSlice';
 import { countofwislist } from '../Store/slice/FilterSlice';
 import { handleaddproduct } from './Addproduct';
-
+import { Base_url } from './BaseUrL';
 const Wishlist = () => {
   const [wishlistproducts, setWishlistProducts] = useState([]);
 
@@ -19,7 +19,7 @@ const Wishlist = () => {
     const fetchWishlist = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await axios.get('http://localhost:5000/wishlist/getwishlist', {
+        const res = await axios.get(`${Base_url}/wishlist/getwishlist`, {
           headers: {
             authorization: `Bearer ${token}`
           },
@@ -38,22 +38,20 @@ const Wishlist = () => {
     fetchWishlist();
   }, [])
 
-
-
-  const handleDelete = async (id, productId) => {
+  const handleDelete = async (productId) => {
 
     const token = localStorage.getItem('token');
 
 
     try {
-      const res = await axios.delete(`http://localhost:5000/wishlist/removewishlist/${productId}`, {
+      const res = await axios.delete(`${Base_url}/wishlist/removewishlist/${productId}`, {
         headers: {
           authorization: `Bearer ${token}`
         }
       })
       console.log(res);
       if (res.data.status) {
-        dispatch(showToast({ message: res.data.data.message, type: 'success' }));
+        // dispatch(showToast({ message: res.data.data.message, type: 'success' }));
         const updatedWishlist = wishlistproducts.filter(item => item.product._id !== productId);
         setWishlistProducts(updatedWishlist);
         dispatch(countofwislist(updatedWishlist));
@@ -64,6 +62,12 @@ const Wishlist = () => {
       // dispatch(showToast({message:res?.data.data.message,type:'error'}));
     }
   }
+  const handleCart = async (item) => {
+     await handleaddproduct(item.product, dispatch);
+    handleDelete(item.product._id,)
+  }
+
+
   return (
     <div>
       <div className="hero-section position-relative w-100">
@@ -109,12 +113,12 @@ const Wishlist = () => {
                       <h5 className='fs-6 fw-medium text-truncate'>{item.product.title}</h5>
                       <Card.Text className=' fw-bold d-flex justify-content-between align-items-center cursor'>
                         <span>&#x20B9; {item.product.price}</span>
-                        <div className=' position-absolute end-0  rounded-5 ' onClick={() => handleDelete(item._id, item.product._id)}>
+                        <div className=' position-absolute end-0  rounded-5 ' onClick={() => handleDelete( item.product._id)}>
                           <FaTrashAlt className='text-danger' />
                         </div>
                       </Card.Text>
                       <div className=' text-center wishlist'>
-                        <Button className='text-uppercase mt-2 btn-size' onClick={() => handleaddproduct(item.product, dispatch)}>Move to Cart</Button>
+                        <Button className='text-uppercase mt-2 btn-size' onClick={() => handleCart(item)}>Move to Cart</Button>
                       </div>
                     </div>
                   </Card>

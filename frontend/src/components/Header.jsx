@@ -14,6 +14,7 @@ import { clearLogout } from '../Store/slice/AuthSlice';
 import { headerdata } from './Data';
 import axios from 'axios'
 import { showToast } from '../Store/slice/ToastSlice';
+import {Base_url} from './BaseUrL'
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -57,21 +58,19 @@ const Header = () => {
 
     const handleReset = async () => {
         try {
-            const response = await axios.post(`http://localhost:5000/api/reset-password-link/${user._id}`);
+            const response = await axios.post(`${Base_url}api/reset-password-link/${user._id}`);
 
             console.log(response);
-        if(response.data.status)
-        {
-            dispatch(showToast({message:response.data.message,type:'success'}));
-        }
-        else
-        {
-            dispatch(showToast({message:response.data.message,type:'success'}));
-        }
+            if (response.data.status) {
+                dispatch(showToast({ message: response.data.message, type: 'success' }));
+            }
+            else {
+                dispatch(showToast({ message: response.data.message, type: 'success' }));
+            }
         } catch (error) {
-            dispatch(showToast({message:"Something went wrong",type:'success'}));         
+            dispatch(showToast({ message: "Something went wrong", type: 'success' }));
         }
-        
+
     }
 
     return (
@@ -83,15 +82,22 @@ const Header = () => {
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" className='d-none' />
                     <Navbar.Collapse id="navbarScroll">
-                        <div className="d-flex my-2 my-lg-0 navhover mx-auto gap-4" style={{ maxHeight: '100px' }} navbarScroll>
+                        <Nav className="d-flex my-2 my-lg-0  mx-auto text-nowrap gap-2" style={{ maxHeight: '100px' }} navbarScroll>
                             {
                                 headerdata.map((item, index) => (
-
-                                    <h6 key={index} style={{ fontFamily: 'var(--secondary-font)' }} onClick={() => navigate(`filterproduct/${item}`)} className='cursor navhover' >{item}</h6>
+                                    <Nav.Link
+                                        key={index}
+                                        as="div" // Optional if you want to keep <h6> style
+                                        onClick={() => navigate(`filterproduct/${item}`)}
+                                        className='cursor navhover'
+                                    >
+                                        <h6 style={{ fontFamily: 'var(--secondary-font)' }}>{item}</h6>
+                                    </Nav.Link>
                                 ))
                             }
-                        </div>
+                        </Nav>
                     </Navbar.Collapse>
+
                     <div className="header-icons d-flex gap-2 justify-content-end text-color fw-bold d-none d-lg-flex">
                         <div className='position-relative'><FiSearch className=' fs-4' onClick={handleSearch} />
                             <Searchbox />

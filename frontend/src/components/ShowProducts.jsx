@@ -14,7 +14,7 @@ const ShowProducts = () => {
             <Container>
                 <Row className=' mx-0 mt-4 justify-content-between align-items-center'>
                     <Col>
-                        <div className='d-flex gap-3 align-items-center cursor' onClick={() => dispatch(sortoffcanvasshow())}>
+                        <div className='d-flex gap-3 align-items-center  cursor' onClick={() => dispatch(sortoffcanvasshow())}>
                             <img src="https://res.cloudinary.com/dtfn7ppzg/image/upload/v1749908565/filter-default_auuhsl.svg" alt="" />
                             <span className='fw-semibold text-nowrap' style={{ color: 'var(--icon-color)', fontSize: 'var( --section-heading)' }}>Sort & filter</span>
                             {
@@ -25,7 +25,7 @@ const ShowProducts = () => {
 
                         </div>
                     </Col>
-                    <Col>
+                    <Col className='text-nowrap'>
                         <p className=' text-capitalize mb-0 text-end py-2'>Home / <span style={{ color: 'var(--icon-color)' }} className=' fw-bolder fs-14 '>{itemName}</span></p>
                     </Col>
                 </Row>

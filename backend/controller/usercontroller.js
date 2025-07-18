@@ -3,12 +3,18 @@ const bcrypt = require('bcryptjs')
 const sentmail = require('../utils/Nodemailer');
 const { JWT_SECRET } = require('../utils/config')
 const Jwt = require('jsonwebtoken');
+import { Base_url } from '../../frontend/src/components/BaseUrL';
 
 
 //#region add user
 const adduser = async (req, res) => {
     try {
         const user = req.body;
+        console.log("hcjhdfj", user)
+        if (!req.body || typeof req.body.password !== 'string') {
+            return res.status(400).json({ message: "❌ Password is missing or invalid." });
+        }
+
         if (!user) {
             return res.status(400).json({ status: false, data: { message: 'user is null' } });
         }
@@ -20,7 +26,7 @@ const adduser = async (req, res) => {
         // generate token for verify
         const token = Jwt.sign({ _id: dbuser._id, }, JWT_SECRET, { expiresIn: '1d' });
 
-        const verifylink = `http://localhost:5173/verify-email/${token}`;
+        const verifylink = `${Base_url}verify-email/${token}`;
         const existuser = await usermodel.findOne({ phonenumber: user.phonenumber });
         if (!existuser) {
             return res.status(400).json({ status: false, data: { message: 'User doesnt exists' } });
@@ -122,12 +128,12 @@ const resetpasswordlink = async (req, res) => {
 
     try {
         const user = await usermodel.findOne({ _id: userId });
-        console.log('user', user);
+
         if (!user) {
             return res.status(400).json({ status: false, data: { message: 'User not found' } });
         }
         const token = Jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '15m' });
-        const resetlink = `http://localhost:5173/reset-password/${user._id}/${token}`;
+        const resetlink = `${Base_url}reset-password/${user._id}/${token}`;
         // await sentmail(user.email, 'Password Reset', `Click the link to reset your password: ${resetlink}`);
         const sub = "Reset Password";
         const text = 'Click on this link below';
@@ -148,10 +154,9 @@ const resetpasswordlink = async (req, res) => {
 }
 const resetpassword = async (req, res) => {
     const { userId, token } = req.params;
-    console.log(userId)
-    console.log(token)
+
     const { newPassword } = req.body;
-    console.log(newPassword);
+
     if (!token) {
         return res.status(400).json({ status: false, message: 'token is null' });
     }
